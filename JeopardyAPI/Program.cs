@@ -1,6 +1,15 @@
+using Serilog;
+using DataLayer;
+using BusinessLayer;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+
+// Added Logging using Serilog
+builder.Host.UseSerilog(
+    (ctx, lc) => lc.WriteTo.Console().WriteTo.File("../logs/jeopardy.txt", rollingInterval: RollingInterval.Day)
+);
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
