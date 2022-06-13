@@ -1,3 +1,5 @@
+using System.Data.SQLite;
+
 namespace DataLayer;
 
 public class DBRepository : IRepository
