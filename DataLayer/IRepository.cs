@@ -1,5 +1,5 @@
 ﻿namespace DataLayer;
-public class Class1
+public interface IRepository
 {
 
 }
