@@ -12,7 +12,7 @@ public class Business : IBusiness
         _repo = repo;
     }
 
-    public async Task<List<Question>> GetQuestionsAsync(string category)
+    public async Task<List<Question>> GetQuestionsAsync(int category)
     {
         return await _repo.GetQuestionsAsync(category);
     }

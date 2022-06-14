@@ -12,7 +12,7 @@ public class DBRepository : IRepository
         _connectionString = connectionString;
     }
 
-    public async Task<List<Question>> GetQuestionsAsync(string category)
+    public async Task<List<Question>> GetQuestionsAsync(int category)
     {
         return new List<Question>();
     }
