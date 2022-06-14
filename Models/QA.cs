@@ -2,6 +2,6 @@ namespace Models;
 
 public class QA
 {
-    public List<Question> Questions { get; set; } = new List<Question>();
-    public List<Answer> Answers { get; set; } = new List<Answer>();
+    public Question Question { get; set; } = new Question();
+    public Answer Answer { get; set; } = new Answer();
 }
