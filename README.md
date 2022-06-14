@@ -1,6 +1,14 @@
 # Jeopardy-Backend
 
-Backend for jeopardy.
+Welcome to the Jeopardy backend! In this repository, an API(JeopardyAPI) was created using ASP.NET. JeoparyAPI will be used with Angular to retrieve information from a local database created using SQLite.
+
+## About
+
+Jeopary is not an original idea. It uses the original game temple to make learning fun. The game questions revolve around multiple topics. To name a few: Angular, C#, SQL, Principles/Methodologies, etc.
+
+## Download
+
+To use this local application, download the script for your operating system.
 
 ## Entity Relationship Diagram
 
