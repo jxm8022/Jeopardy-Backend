@@ -16,7 +16,7 @@ builder.Services.AddControllers().AddJsonOptions(options => options.JsonSerializ
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddScoped<IRepository>(ctx => new DBRepository(builder.Configuration.GetConnectionString("Data Source=../../Jeopardy-SQLite/createSQLdatabase/jeopardyDB.sqlite;Version=3;")));
+builder.Services.AddScoped<IRepository>(ctx => new DBRepository("Data Source=../../Jeopardy-SQLite/createSQLdatabase/jeopardyDB.sqlite;Version=3;"));
 builder.Services.AddScoped<IBusiness, Business>();
 
 var app = builder.Build();
