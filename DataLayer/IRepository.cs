@@ -3,8 +3,7 @@
 namespace DataLayer;
 public interface IRepository
 {
-    Task<List<Question>> GetQuestionsAsync(int category);
-    Task<List<Answer>> GetAnswersAsync(int question_id);
+    Task<List<QA>> GetQuestionsAsync(int category);
     Task<int> CreateTeamAsync(Team team);
     Task UpdateTeamAsync(Team team);
     Task CreatePlayerAsync(Player player);

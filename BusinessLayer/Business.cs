@@ -12,13 +12,9 @@ public class Business : IBusiness
         _repo = repo;
     }
 
-    public async Task<List<Question>> GetQuestionsAsync(int category)
+    public async Task<List<QA>> GetQuestionsAsync(int category)
     {
         return await _repo.GetQuestionsAsync(category);
-    }
-    public async Task<List<Answer>> GetAnswersAsync(int question_id)
-    {
-        return await _repo.GetAnswersAsync(question_id);
     }
     public async Task<int> CreateTeamAsync(Team team)
     {

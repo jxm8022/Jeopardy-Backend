@@ -12,13 +12,9 @@ public class DBRepository : IRepository
         _connectionString = connectionString;
     }
 
-    public async Task<List<Question>> GetQuestionsAsync(int category)
+    public async Task<List<QA>> GetQuestionsAsync(int category)
     {
-        return new List<Question>();
-    }
-    public async Task<List<Answer>> GetAnswersAsync(int question_id)
-    {
-        return new List<Answer>();
+        return new List<QA>();
     }
     public async Task<int> CreateTeamAsync(Team team)
     {
