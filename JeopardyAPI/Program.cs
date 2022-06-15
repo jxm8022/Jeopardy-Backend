@@ -1,6 +1,7 @@
 using Serilog;
 using DataLayer;
 using BusinessLayer;
+using Microsoft.AspNetCore.Cors;
 
 var MyAllowedSpecificOrigins = "_myAllowedSpecificOrigins";
 
@@ -19,7 +20,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy(name: MyAllowedSpecificOrigins,
                       policy =>
                       {
-                          policy.WithOrigins("http://localhost:4200")
+                          policy.WithOrigins("*")
                             .AllowAnyHeader()
                             .AllowAnyMethod()
                             .AllowAnyOrigin();
@@ -44,6 +45,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors(MyAllowedSpecificOrigins);
 
 app.UseAuthorization();
 
