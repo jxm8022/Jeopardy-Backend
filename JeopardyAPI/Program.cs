@@ -16,14 +16,15 @@ builder.Host.UseSerilog(
 // add cors policy
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy(name: MyAllowSpecificOrigins,
-                      policy  =>
+    options.AddPolicy(name: MyAllowedSpecificOrigins,
+                      policy =>
                       {
                           policy.WithOrigins("http://localhost:*")
                             .AllowAnyHeader()
                             .AllowAnyMethod()
                             .AllowAnyOrigin();
                       });
+});
 
 builder.Services.AddControllers().AddJsonOptions(options => options.JsonSerializerOptions.PropertyNamingPolicy = null);
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
