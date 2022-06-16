@@ -19,7 +19,7 @@ public class DBRepository : IRepository
         SQLiteConnection dbConnection = new SQLiteConnection(_connectionString);
         dbConnection.Open();
 
-        string sql = "SELECT question.entry, answer.entry FROM question INNER JOIN answer ON question.question_id = answer.question_id WHERE type_id = @category ORDER BY RANDOM() LIMIT 5";
+        string sql = "SELECT * FROM question INNER JOIN answer ON question.question_id = answer.question_id WHERE type_id = @category ORDER BY RANDOM() LIMIT 5";
         SQLiteCommand command = new SQLiteCommand(sql, dbConnection);
         command.Parameters.AddWithValue("@category", category);
         SQLiteDataReader reader = command.ExecuteReader();
@@ -29,11 +29,15 @@ public class DBRepository : IRepository
             {
                 Question = new Question
                 {
-                    Entry = reader.GetString(0)
+                    Id = reader.GetInt32(0),
+                    Entry = reader.GetString(1),
+                    Type_id = reader.GetInt32(2)
                 },
                 Answer = new Answer
                 {
-                    Entry = reader.GetString(1)
+                    Id = reader.GetInt32(3),
+                    Entry = reader.GetString(4),
+                    Question_id = reader.GetInt32(5)
                 }
             });
         }
