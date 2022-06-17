@@ -1,0 +1,7 @@
+# removing stuff
+logs/
+.vs/
+.vscode/
+**/bin/
+**/obj/
+publish/
