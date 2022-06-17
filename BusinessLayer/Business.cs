@@ -16,9 +16,9 @@ public class Business : IBusiness
     {
         return await _repo.GetQuestionsAsync(category);
     }
-    public async Task<int> CreateTeamAsync(Team team)
+    public async Task CreateTeamsAsync(List<Team> teams)
     {
-        return await _repo.CreateTeamAsync(team);
+        await _repo.CreateTeamsAsync(teams);
     }
     public async Task UpdateTeamAsync(Team team)
     {

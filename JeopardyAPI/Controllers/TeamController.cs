@@ -34,14 +34,13 @@ public class TeamController : ControllerBase
         await _bl.UpdateTeamAsync(team);
     }
 
-    [HttpPost("CreateTeam")]
-    public async Task<ActionResult<int>> Post(Team team)
+    [HttpPost("CreateTeams")]
+    public async Task<ActionResult<int>> Post(List<Team> teams)
     {
-        int team_id = -1;
-        if (team.Name.Length > 0)
+        if (teams[0].Name.Length > 0)
         {
-            team_id = await _bl.CreateTeamAsync(team);
-            return Ok(team_id);
+            await _bl.CreateTeamsAsync(teams);
+            return Ok();
         }
         return NoContent();
     }

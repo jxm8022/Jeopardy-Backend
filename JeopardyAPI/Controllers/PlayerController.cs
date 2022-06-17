@@ -28,7 +28,7 @@ public class PlayerController : ControllerBase
         return NoContent();
     }
 
-    [HttpPost("CreatePlayer")]
+    [HttpPost("CreatePlayers")]
     public async Task<ActionResult> Post(Player player)
     {
         if (player.Name.Length > 0)

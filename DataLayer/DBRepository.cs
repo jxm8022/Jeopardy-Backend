@@ -47,30 +47,28 @@ public class DBRepository : IRepository
 
         return questions;
     }
-    public async Task<int> CreateTeamAsync(Team team)
+    public async Task CreateTeamsAsync(List<Team> teams)
     {
-        int team_id = -1;
-
         SQLiteConnection dbConnection = new SQLiteConnection(_connectionString);
         dbConnection.Open();
 
-        string sql = "INSERT INTO team(team_name) VALUES(@team_name)";
+        string sql = "INSERT INTO team(team_name, score) VALUES";
+        for (int i = 0; i < teams.Count; i++)
+        {
+            if (i == teams.Count - 1)
+                sql += $"(@team_name_{i}, @score_{i})";
+            else
+                sql += $"(@team_name_{i}, @score_{i}),";
+        }
         SQLiteCommand command = new SQLiteCommand(sql, dbConnection);
-        command.Parameters.AddWithValue("team_name", team.Name);
+        for (int i = 0; i < teams.Count; i++)
+        {
+            command.Parameters.AddWithValue($"team_name_{i}", teams[i].Name);
+            command.Parameters.AddWithValue($"score_{i}", teams[i].Score);
+        }
         await command.ExecuteNonQueryAsync();
-        dbConnection.Close();
-
-        dbConnection.Open();
-        sql = "SELECT * FROM team WHERE team_name = @team_name";
-        command = new SQLiteCommand(sql, dbConnection);
-        command.Parameters.AddWithValue("team_name", team.Name);
-        SQLiteDataReader reader = command.ExecuteReader();
-        await reader.ReadAsync();
-        team_id = reader.GetInt32(0);
 
         dbConnection.Close();
-
-        return team_id;
     }
     public async Task UpdateTeamAsync(Team team)
     {
