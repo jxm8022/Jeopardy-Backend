@@ -93,7 +93,7 @@ public class DBRepository : IRepository
         {
             for (int j = 0; j < players[i].Count; j++)
             {
-                if ((i == players.Count - 1) && (j == players[j].Count - 1))
+                if ((i == players.Count - 1) && (j == players[i].Count - 1))
                     sql += $"(@player_name_{i}_{j}, @team_id_{i}_{j})";
                 else
                     sql += $"(@player_name_{i}_{j}, @team_id_{i}_{j}),";
