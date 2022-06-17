@@ -29,11 +29,11 @@ public class PlayerController : ControllerBase
     }
 
     [HttpPost("CreatePlayers")]
-    public async Task<ActionResult> Post(Player player)
+    public async Task<ActionResult> Post(List<List<Player>> players)
     {
-        if (player.Name.Length > 0)
+        if (players[0][0].Name.Length > 0)
         {
-            await _bl.CreatePlayerAsync(player);
+            await _bl.CreatePlayersAsync(players);
             return Ok();
         }
         return NoContent();

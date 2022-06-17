@@ -83,15 +83,31 @@ public class DBRepository : IRepository
 
         dbConnection.Close();
     }
-    public async Task CreatePlayerAsync(Player player)
+    public async Task CreatePlayersAsync(List<List<Player>> players)
     {
         SQLiteConnection dbConnection = new SQLiteConnection(_connectionString);
         dbConnection.Open();
 
-        string sql = "INSERT INTO player(player_name, team_id) VALUES(@player_name, @team_id)";
+        string sql = "INSERT INTO player(player_name, team_id) VALUES";
+        for (int i = 0; i < players.Count; i++)
+        {
+            for (int j = 0; j < players[i].Count; j++)
+            {
+                if ((i == players.Count - 1) && (j == players[j].Count - 1))
+                    sql += $"(@player_name_{i}_{j}, @team_id_{i}_{j})";
+                else
+                    sql += $"(@player_name_{i}_{j}, @team_id_{i}_{j}),";
+            }
+        }
         SQLiteCommand command = new SQLiteCommand(sql, dbConnection);
-        command.Parameters.AddWithValue("player_name", player.Name);
-        command.Parameters.AddWithValue("team_id", player.Team_id);
+        for (int i = 0; i < players.Count; i++)
+        {
+            for (int j = 0; j < players[i].Count; j++)
+            {
+                command.Parameters.AddWithValue($"player_name_{i}_{j}", players[i][j].Name);
+                command.Parameters.AddWithValue($"team_id_{i}_{j}", players[i][j].Team_id);
+            }
+        }
         await command.ExecuteNonQueryAsync();
 
         dbConnection.Close();

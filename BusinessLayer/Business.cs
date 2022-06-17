@@ -24,9 +24,9 @@ public class Business : IBusiness
     {
         await _repo.UpdateTeamAsync(team);
     }
-    public async Task CreatePlayerAsync(Player player)
+    public async Task CreatePlayersAsync(List<List<Player>> players)
     {
-        await _repo.CreatePlayerAsync(player);
+        await _repo.CreatePlayersAsync(players);
     }
     public async Task<List<Team>> GetTeamsSortedbyScoreAsync()
     {
