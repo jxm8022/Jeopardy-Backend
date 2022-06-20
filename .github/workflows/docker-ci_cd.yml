@@ -1,0 +1,106 @@
+name: Docker CI-CD
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+    workflow_dispatch:
+  
+permissions:
+  pull-requests: read
+
+jobs:
+
+  analysis:
+    runs-on: windows-latest
+    steps:
+      - name: checkout repository
+        uses: actions/checkout@v3
+        with:
+         fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+      - name: Setup .NET Core SDK
+        uses: actions/setup-dotnet@v2.0.0
+        with:
+          # Optional SDK version(s) to use. If not provided, will install global.json version when available. Examples: 2.2.104, 3.1, 3.1.x
+          dotnet-version: 6.0.x
+      - name: Set up JDK 11
+        uses: actions/setup-java@v1
+        with:
+          java-version: 1.11
+      - name: Cache SonarCloud packages
+        uses: actions/cache@v1
+        with:
+          path: ~\sonar\cache
+          key: ${{ runner.os }}-sonar
+          restore-keys: ${{ runner.os }}-sonar
+      - name: Cache SonarCloud scanner
+        id: cache-sonar-scanner
+        uses: actions/cache@v1
+        with:
+          path: .\.sonar\scanner
+          key: ${{ runner.os }}-sonar-scanner
+          restore-keys: ${{ runner.os }}-sonar-scanner
+      - name: Install SonarCloud scanner
+        if: steps.cache-sonar-scanner.outputs.cache-hit != 'true'
+        shell: powershell
+        run: |
+          New-Item -Path .\.sonar\scanner -ItemType Directory
+          dotnet tool update dotnet-sonarscanner --tool-path .\.sonar\scanner
+      - name: Test
+        run:  |
+          cd ./Tests
+          dotnet test --logger trx --collect:"XPlat Code Coverage" -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover
+      - name: Build and analyze
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        shell: powershell
+        run: |
+          .\.sonar\scanner\dotnet-sonarscanner begin /k:"jxm8022_Jeopardy-Backend" /o:"jxm8022" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io"
+          dotnet build JeopardyAPI
+          .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
+
+  build:
+    runs-on: ubuntu-latest
+    needs: analysis
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Docker Setup Buildx
+      uses: docker/setup-buildx-action@v1.6.0
+    
+    - name: Docker Login
+      uses: docker/login-action@v1.14.1
+      with:
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_PASSWORD }}
+        
+    - name: create-json
+      uses: jsdaniell/create-json@1.1.2
+      with:
+        name: appsettings.json
+        json: ${{ secrets.APPSETTINGS }}
+        dir: ./JeopardyAPI
+        
+    - name: Build and push Docker images
+      uses: docker/build-push-action@v2.10.0
+      with:
+        context: .
+        file: ./Dockerfile
+        push: true
+        tags: index.docker.io/${{ secrets.DOCKERHUB_USERNAME }}/junipardy:${{ github.sha }}
+    
+    - name: Build the Docker image
+      run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+    - name: Azure WebApp
+      uses: Azure/webapps-deploy@v2
+      with:
+        app-name: 'junipardyapi'
+        publish-profile: ${{secrets.AZURE_PUBLISHPROFILE_JUNIPARDY}}
+        images: index.docker.io/${{ secrets.DOCKERHUB_USERNAME }}/junipardy:${{ github.sha }}
