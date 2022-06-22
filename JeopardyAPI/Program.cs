@@ -33,9 +33,9 @@ builder.Services.AddControllers().AddJsonOptions(options => options.JsonSerializ
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// builder.Services.AddScoped<IRepository>(ctx => new DBRepository("Data Source=../../Jeopardy-SQLite/createSQLdatabase/jeopardyDB.sqlite;Version=3;")); // FOR LOCAL DATABASE USING SQLITE
+builder.Services.AddScoped<IRepository>(ctx => new DBRepository("Data Source=../../Jeopardy-SQLite/createSQLdatabase/jeopardyDB.sqlite;Version=3;")); // FOR LOCAL DATABASE USING SQLITE
 // builder.Services.AddDbContext<C4DBContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("Junipardy"))); // FOR SQL HOSTED ON AZURE (USING EFCORE)
-builder.Services.AddScoped<IRepository>(ctx => new DBRepository(builder.Configuration.GetConnectionString("JunipardyDB"))); // FOR SQL HOSTED ON AZURE (NOT USING EFCORE)
+// builder.Services.AddScoped<IRepository>(ctx => new DBRepository(builder.Configuration.GetConnectionString("JunipardyDB"))); // FOR SQL HOSTED ON AZURE (NOT USING EFCORE)
 builder.Services.AddScoped<IBusiness, Business>();
 
 var app = builder.Build();
