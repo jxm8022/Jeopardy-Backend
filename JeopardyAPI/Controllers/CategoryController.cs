@@ -6,12 +6,12 @@ namespace JeopardyAPI.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class TypeController : ControllerBase
+public class CategoryController : ControllerBase
 {
     private readonly IBusiness _bl;
-    private readonly ILogger<TypeController> _logger;
+    private readonly ILogger<CategoryController> _logger;
 
-    public TypeController(IBusiness bl, ILogger<TypeController> logger)
+    public CategoryController(IBusiness bl, ILogger<CategoryController> logger)
     {
         _bl = bl;
         _logger = logger;
