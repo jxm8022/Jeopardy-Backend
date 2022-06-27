@@ -9,5 +9,8 @@ public interface IRepository
     Task CreatePlayersAsync(List<List<Player>> players);
     Task<List<Team>> GetTeamsSortedbyScoreAsync();
     Task<List<Player>> GetTeamMembersAsync(int team_id);
-    Task<List<Models.Type>> GetTypesAsync();
+    Task<List<Category>> GetCategoriesAsync();
+    Task<List<Subcategory>> GetSubcategoriesAsync(int category_id);
+    Task CreateCategoryAsync(string categoryName);
+    Task CreateSubcategoryAsync(Subcategory subcategory);
 }

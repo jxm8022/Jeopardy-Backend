@@ -1,4 +1,5 @@
-using System.Data.SQLite;
+using System.Data.SqlClient;
+using System.Data;
 using Models;
 
 namespace DataLayer;
@@ -163,28 +164,8 @@ public class DBRepository : IRepository
 
         return players;
     }
-    public async Task<List<Models.Type>> GetTypesAsync()
-    {
-        List<Models.Type> types = new List<Models.Type>();
-
-        SQLiteConnection dbConnection = new SQLiteConnection(_connectionString);
-        dbConnection.Open();
-
-        string sql = "SELECT * FROM type";
-        SQLiteCommand command = new SQLiteCommand(sql, dbConnection);
-        SQLiteDataReader reader = command.ExecuteReader();
-        while (await reader.ReadAsync())
-        {
-            types.Add(new Models.Type
-            {
-                Id = reader.GetInt32(0),
-                Category = reader.GetString(1)
-            });
-        }
-        reader.Close();
-
-        dbConnection.Close();
-
-        return types;
-    }
+    public async Task<List<Category>> GetCategoriesAsync() { return await DBCategory.GetCategories(_connectionString); }
+    public async Task<List<Subcategory>> GetSubcategoriesAsync(int category_id) { return await DBCategory.GetSubcategories(category_id, _connectionString); }
+    public async Task CreateCategoryAsync(string categoryName) { await DBCategory.CreateCategory(categoryName, _connectionString); }
+    public async Task CreateSubcategoryAsync(Subcategory subcategory) { await DBCategory.CreateSubcategory(subcategory, _connectionString); }
 }
