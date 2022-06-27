@@ -51,61 +51,8 @@ public class DBRepository : IRepository
     }
 
     // Player
-    public async Task<List<Player>> GetTeamMembersAsync(int team_id)
-    {
-        List<Player> players = new List<Player>();
-
-        SQLiteConnection dbConnection = new SQLiteConnection(_connectionString);
-        dbConnection.Open();
-
-        string sql = "SELECT * FROM player WHERE team_id = @team_id";
-        SQLiteCommand command = new SQLiteCommand(sql, dbConnection);
-        command.Parameters.AddWithValue("@team_id", team_id);
-        SQLiteDataReader reader = command.ExecuteReader();
-        while (await reader.ReadAsync())
-        {
-            players.Add(new Player
-            {
-                Id = reader.GetInt32(0),
-                Name = reader.GetString(1),
-                Team_id = team_id
-            });
-        }
-        reader.Close();
-
-        dbConnection.Close();
-
-        return players;
-    }
-    public async Task CreatePlayersAsync(List<List<Player>> players)
-    {
-        SQLiteConnection dbConnection = new SQLiteConnection(_connectionString);
-        dbConnection.Open();
-
-        string sql = "INSERT INTO player(player_name, team_id) VALUES";
-        for (int i = 0; i < players.Count; i++)
-        {
-            for (int j = 0; j < players[i].Count; j++)
-            {
-                if ((i == players.Count - 1) && (j == players[i].Count - 1))
-                    sql += $"(@player_name_{i}_{j}, @team_id_{i}_{j})";
-                else
-                    sql += $"(@player_name_{i}_{j}, @team_id_{i}_{j}),";
-            }
-        }
-        SQLiteCommand command = new SQLiteCommand(sql, dbConnection);
-        for (int i = 0; i < players.Count; i++)
-        {
-            for (int j = 0; j < players[i].Count; j++)
-            {
-                command.Parameters.AddWithValue($"player_name_{i}_{j}", players[i][j].Name);
-                command.Parameters.AddWithValue($"team_id_{i}_{j}", players[i][j].Team_id);
-            }
-        }
-        await command.ExecuteNonQueryAsync();
-
-        dbConnection.Close();
-    }
+    public async Task<List<Player>> GetTeamMembersAsync(int team_id) { return await DBPlayer.GetTeamMembers(team_id, _connectionString); }
+    public async Task CreatePlayersAsync(List<List<Player>> players) { await DBPlayer.CreatePlayers(players, _connectionString); }
 
     // Team
     public async Task<List<Team>> GetTeamsSortedbyScoreAsync() { return await DBTeam.GetTeamsSortedbyScore(_connectionString); }

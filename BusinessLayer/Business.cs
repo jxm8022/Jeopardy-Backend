@@ -19,14 +19,8 @@ public class Business : IBusiness
     }
 
     // Player
-    public async Task<List<Player>> GetTeamMembersAsync(int team_id)
-    {
-        return await _repo.GetTeamMembersAsync(team_id);
-    }
-    public async Task CreatePlayersAsync(List<List<Player>> players)
-    {
-        await _repo.CreatePlayersAsync(players);
-    }
+    public async Task<List<Player>> GetTeamMembersAsync(int team_id) { return await _repo.GetTeamMembersAsync(team_id); }
+    public async Task CreatePlayersAsync(List<List<Player>> players) { await _repo.CreatePlayersAsync(players); }
 
     // Team
     public async Task<List<Team>> GetTeamsSortedbyScoreAsync() { return await _repo.GetTeamsSortedbyScoreAsync(); }
