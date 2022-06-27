@@ -18,9 +18,9 @@ public class QuestionController : ControllerBase
     }
 
     [HttpGet("GetQuestions/{category}")]
-    public async Task<ActionResult<List<QA>>> Get(int category)
+    public async Task<ActionResult<List<QA>>> Get(int subcategory)
     {
-        List<QA> questions = await _bl.GetQuestionsAsync(category);
+        List<QA> questions = await _bl.GetQuestionsAsync(subcategory);
         if (questions != null)
         {
             return Ok(questions);

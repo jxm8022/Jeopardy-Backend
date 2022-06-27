@@ -37,7 +37,7 @@ public class TeamController : ControllerBase
     [HttpPost("CreateTeams")]
     public async Task<ActionResult<int>> Post(List<Team> teams)
     {
-        if (teams[0].Name.Length > 0)
+        if (teams != null && teams.Count > 0)
         {
             await _bl.CreateTeamsAsync(teams);
             return Ok();

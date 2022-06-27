@@ -2,7 +2,7 @@ namespace Models;
 
 public class Answer
 {
-    public int Id { get; set; } = -1;
-    public string Entry { get; set; } = "";
-    public int Question_id { get; set; } = -1;
+    public int answer_id { get; set; } = -1;
+    public string answer_entry { get; set; } = "";
+    public int question_id { get; set; } = -1;
 }

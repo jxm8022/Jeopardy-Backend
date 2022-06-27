@@ -31,7 +31,7 @@ public class PlayerController : ControllerBase
     [HttpPost("CreatePlayers")]
     public async Task<ActionResult> Post(List<List<Player>> players)
     {
-        if (players[0][0].Name.Length > 0)
+        if (players != null)
         {
             await _bl.CreatePlayersAsync(players);
             return Ok();

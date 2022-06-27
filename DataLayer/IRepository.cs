@@ -3,11 +3,21 @@
 namespace DataLayer;
 public interface IRepository
 {
-    Task<List<QA>> GetQuestionsAsync(int category);
-    Task CreateTeamsAsync(List<Team> teams);
-    Task UpdateTeamAsync(Team team);
-    Task CreatePlayersAsync(List<List<Player>> players);
-    Task<List<Team>> GetTeamsSortedbyScoreAsync();
+    // Question
+    Task<List<QA>> GetQuestionsAsync(int subcategory);
+
+    // Player
     Task<List<Player>> GetTeamMembersAsync(int team_id);
-    Task<List<Models.Type>> GetTypesAsync();
+    Task CreatePlayersAsync(List<List<Player>> players);
+
+    // Team
+    Task<List<Team>> GetTeamsSortedbyScoreAsync();
+    Task UpdateTeamAsync(Team team);
+    Task CreateTeamsAsync(List<Team> teams);
+
+    // Category
+    Task<List<Category>> GetCategoriesAsync();
+    Task<List<Subcategory>> GetSubcategoriesAsync(int category_id);
+    Task CreateCategoryAsync(string categoryName);
+    Task CreateSubcategoryAsync(Subcategory subcategory);
 }
