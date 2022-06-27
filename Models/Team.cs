@@ -2,7 +2,7 @@ namespace Models;
 
 public class Team
 {
-    public int Id { get; set; } = -1;
-    public string Name { get; set; } = "";
-    public int Score { get; set; } = 0;
+    public int team_id { get; set; } = -1;
+    public string team_name { get; set; } = "";
+    public int team_score { get; set; } = 0;
 }
