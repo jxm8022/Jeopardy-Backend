@@ -13,10 +13,7 @@ public class Business : IBusiness
     }
 
     // Question
-    public async Task<List<QA>> GetQuestionsAsync(int category)
-    {
-        return await _repo.GetQuestionsAsync(category);
-    }
+    public async Task<List<QA>> GetQuestionsAsync(int subcategory) { return await _repo.GetQuestionsAsync(subcategory); }
 
     // Player
     public async Task<List<Player>> GetTeamMembersAsync(int team_id) { return await _repo.GetTeamMembersAsync(team_id); }
