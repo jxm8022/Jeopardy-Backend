@@ -16,6 +16,7 @@ public class DBRepository : IRepository
     public async Task<List<QA>> GetQuestionsAsync(int subcategory) { return await DBQuestion.GetQuestionsAsync(subcategory, _connectionString); }
 
     // Player
+    public async Task<Admin> GetAdminAsync(string username, string password) { return await DBPlayer.GetAdmin(username, password, _connectionString); }
     public async Task<List<Player>> GetTeamMembersAsync(int team_id) { return await DBPlayer.GetTeamMembers(team_id, _connectionString); }
     public async Task CreatePlayersAsync(List<List<Player>> players) { await DBPlayer.CreatePlayers(players, _connectionString); }
 
