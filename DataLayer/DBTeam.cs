@@ -14,7 +14,7 @@ public static class DBTeam
             DataSet teamSet = new DataSet();
 
             using SqlConnection connection = new SqlConnection(_connectionString);
-            using SqlCommand cmd = new SqlCommand("SELECT * FROM Team ORDER BY score DESC", connection);
+            using SqlCommand cmd = new SqlCommand("SELECT * FROM Team ORDER BY team_score DESC", connection);
 
             SqlDataAdapter teamAdapter = new SqlDataAdapter(cmd);
 

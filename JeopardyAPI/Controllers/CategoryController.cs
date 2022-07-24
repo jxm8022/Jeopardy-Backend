@@ -39,7 +39,7 @@ public class CategoryController : ControllerBase
         return NoContent();
     }
 
-    [HttpPost("CreateCategory/{category}")]
+    [HttpPost("CreateCategory/{categoryName}")]
     public async Task<ActionResult> PostCategory(string categoryName)
     {
         if (categoryName.Length > 0)
@@ -50,7 +50,7 @@ public class CategoryController : ControllerBase
         return NoContent();
     }
 
-    [HttpPost("CreateSubcategory/{subcategory}")]
+    [HttpPost("CreateSubcategory")]
     public async Task<ActionResult> PostSubcategory(Subcategory subcategory)
     {
         if (subcategory.subcategory_name.Length > 0 && subcategory.category_id > 0)
