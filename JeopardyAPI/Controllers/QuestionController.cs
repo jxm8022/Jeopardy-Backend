@@ -17,7 +17,7 @@ public class QuestionController : ControllerBase
         _logger = logger;
     }
 
-    [HttpGet("GetQuestions/{category}")]
+    [HttpGet("GetQuestions/{subcategory}")]
     public async Task<ActionResult<List<QA>>> Get(int subcategory)
     {
         List<QA> questions = await _bl.GetQuestionsAsync(subcategory);
