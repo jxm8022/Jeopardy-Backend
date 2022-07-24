@@ -17,6 +17,17 @@ public class PlayerController : ControllerBase
         _logger = logger;
     }
 
+    [HttpGet("Admin/{username}/{password}")]
+    public async Task<ActionResult<Admin>> GetAdmin(string username, string password)
+    {
+        Admin admin = await _bl.GetAdminAsync(username, password);
+        if (admin != null)
+        {
+            return Ok(admin);
+        }
+        return NoContent();
+    }
+
     [HttpGet("GetMembers/{team_id}")]
     public async Task<ActionResult<List<Player>>> Get(int team_id)
     {
