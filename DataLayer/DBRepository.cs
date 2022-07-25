@@ -13,7 +13,9 @@ public class DBRepository : IRepository
     }
 
     // Question
-    public async Task<List<QA>> GetQuestionsAsync(int subcategory) { return await DBQuestion.GetQuestionsAsync(subcategory, _connectionString); }
+    public async Task<List<QA>> GetQuestionsAsync(int subcategory) { return await DBQuestion.GetQuestions(subcategory, _connectionString); }
+    public async Task CreateQuestionAsync(Question question) { await DBQuestion.CreateQuestion(question, _connectionString); }
+    public async Task CreateAnswerAsync(Answer answer) { await DBQuestion.CreateAnswer(answer, _connectionString); }
 
     // Player
     public async Task<Admin> GetAdminAsync(string username, string password) { return await DBPlayer.GetAdmin(username, password, _connectionString); }

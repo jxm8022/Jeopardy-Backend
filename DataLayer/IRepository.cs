@@ -5,6 +5,8 @@ public interface IRepository
 {
     // Question
     Task<List<QA>> GetQuestionsAsync(int subcategory);
+    Task CreateQuestionAsync(Question question);
+    Task CreateAnswerAsync(Answer answer);
 
     // Player
     Task<Admin> GetAdminAsync(string username, string password);

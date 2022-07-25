@@ -27,4 +27,16 @@ public class QuestionController : ControllerBase
         }
         return NoContent();
     }
+
+    [HttpPost("CreateQuestion")]
+    public async Task<ActionResult> PostQuestion(QA question)
+    {
+        if (question.question.question_entry.Length > 0 && question.question.category_id > 0 && question.answer.answer_entry.Length > 0 && question.answer.question_id > 0)
+        {
+            await _bl.CreateQuestionAsync(question.question);
+            await _bl.CreateAnswerAsync(question.answer);
+            return Ok();
+        }
+        return NoContent();
+    }
 }
