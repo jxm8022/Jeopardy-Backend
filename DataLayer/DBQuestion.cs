@@ -14,7 +14,7 @@ public static class DBQuestion
             DataSet questionSet = new DataSet();
 
             using SqlConnection connection = new SqlConnection(_connectionString);
-            using SqlCommand cmd = new SqlCommand("SELECT TOP 5 * FROM Question INNER JOIN Answer ON question.question_id = answer.answer_id WHERE category_id = @category_id ORDER BY RAND()", connection);
+            using SqlCommand cmd = new SqlCommand("SELECT TOP 5 * FROM Question INNER JOIN Answer ON question.question_id = answer.question_id WHERE category_id = @category_id ORDER BY RAND()", connection);
             cmd.Parameters.AddWithValue("@category_id", subcategory);
 
             SqlDataAdapter questionAdapter = new SqlDataAdapter(cmd);
@@ -49,9 +49,9 @@ public static class DBQuestion
         });
     }
 
-    public static async Task CreateQuestion(Question question, string _connectionString)
+    public static async Task<int> CreateQuestion(Question question, string _connectionString)
     {
-        await Task.Factory.StartNew(() =>
+        return await Task.Factory.StartNew(() =>
         {
             DataSet questionSet = new DataSet();
 
@@ -78,6 +78,22 @@ public static class DBQuestion
 
                 questionAdapter.Update(questionTable);
             }
+
+            questionSet = new DataSet();
+
+            using SqlCommand cmd2 = new SqlCommand("SELECT * FROM Question ORDER BY question_id DESC", connection);
+
+            questionAdapter = new SqlDataAdapter(cmd2);
+
+            questionAdapter.Fill(questionSet, "QuestionTable");
+
+            questionTable = questionSet.Tables["QuestionTable"];
+            if (questionTable != null && questionTable.Rows.Count > 0)
+            {
+                return (int)questionTable.Rows[0]["question_id"];
+            }
+
+            return -1;
         });
     }
     public static async Task CreateAnswer(Answer answer, string _connectionString)

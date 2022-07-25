@@ -31,10 +31,14 @@ public class QuestionController : ControllerBase
     [HttpPost("CreateQuestion")]
     public async Task<ActionResult> PostQuestion(QA question)
     {
-        if (question.question.question_entry.Length > 0 && question.question.category_id > 0 && question.answer.answer_entry.Length > 0 && question.answer.question_id > 0)
+        if (question.question.question_entry.Length > 0 && question.question.category_id > 0 && question.answer.answer_entry.Length > 0)
         {
-            await _bl.CreateQuestionAsync(question.question);
-            await _bl.CreateAnswerAsync(question.answer);
+            question.answer.question_id = await _bl.CreateQuestionAsync(question.question);
+            Console.WriteLine(question.answer.question_id);
+            if (question.answer.question_id != -1)
+            {
+                await _bl.CreateAnswerAsync(question.answer);
+            }
             return Ok();
         }
         return NoContent();
