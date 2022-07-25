@@ -6,11 +6,11 @@ namespace DataLayer;
 
 public static class DBCategory
 {
-    public static async Task<List<Category>> GetCategories(string _connectionString)
+    public static async Task<List<Models.Type>> GetCategories(string _connectionString)
     {
         return await Task.Factory.StartNew(() =>
         {
-            List<Category> categories = new List<Category>();
+            List<Models.Type> categories = new List<Models.Type>();
             DataSet categorySet = new DataSet();
 
             using SqlConnection connection = new SqlConnection(_connectionString);
@@ -25,11 +25,13 @@ public static class DBCategory
             {
                 foreach (DataRow row in categoryTable.Rows)
                 {
-                    Category category = new Category
+                    Models.Type category = new Models.Type();
+                    category.category = new Category
                     {
                         category_id = (int)row["category_id"],
                         category_name = (string)row["category_name"]
                     };
+                    category.subcategories = GetSubcategories(category.category.category_id, _connectionString);
                     categories.Add(category);
                 }
                 return categories;
@@ -38,38 +40,35 @@ public static class DBCategory
         });
     }
 
-    public static async Task<List<Subcategory>> GetSubcategories(int category_id, string _connectionString)
+    private static List<Subcategory> GetSubcategories(int category_id, string _connectionString)
     {
-        return await Task.Factory.StartNew(() =>
+        List<Subcategory> subcategories = new List<Subcategory>();
+        DataSet categorySet = new DataSet();
+
+        using SqlConnection connection = new SqlConnection(_connectionString);
+        using SqlCommand cmd = new SqlCommand("SELECT * FROM Subcategory WHERE category_id = @category_id", connection);
+        cmd.Parameters.AddWithValue("@category_id", category_id);
+
+        SqlDataAdapter categoryAdapter = new SqlDataAdapter(cmd);
+
+        categoryAdapter.Fill(categorySet, "SubcategoryTable");
+
+        DataTable? categoryTable = categorySet.Tables["SubcategoryTable"];
+        if (categoryTable != null && categoryTable.Rows.Count > 0)
         {
-            List<Subcategory> subcategories = new List<Subcategory>();
-            DataSet categorySet = new DataSet();
-
-            using SqlConnection connection = new SqlConnection(_connectionString);
-            using SqlCommand cmd = new SqlCommand("SELECT * FROM Subcategory WHERE category_id = @category_id", connection);
-            cmd.Parameters.AddWithValue("@category_id", category_id);
-
-            SqlDataAdapter categoryAdapter = new SqlDataAdapter(cmd);
-
-            categoryAdapter.Fill(categorySet, "SubcategoryTable");
-
-            DataTable? categoryTable = categorySet.Tables["SubcategoryTable"];
-            if (categoryTable != null && categoryTable.Rows.Count > 0)
+            foreach (DataRow row in categoryTable.Rows)
             {
-                foreach (DataRow row in categoryTable.Rows)
+                Subcategory subcategory = new Subcategory
                 {
-                    Subcategory subcategory = new Subcategory
-                    {
-                        subcategory_id = (int)row["subcategory_id"],
-                        subcategory_name = (string)row["subcategory_name"],
-                        category_id = (int)row["category_id"]
-                    };
-                    subcategories.Add(subcategory);
-                }
-                return subcategories;
+                    subcategory_id = (int)row["subcategory_id"],
+                    subcategory_name = (string)row["subcategory_name"],
+                    category_id = (int)row["category_id"]
+                };
+                subcategories.Add(subcategory);
             }
-            return null!;
-        });
+            return subcategories;
+        }
+        return null!;
     }
 
     public static async Task CreateCategory(string categoryName, string _connectionString)

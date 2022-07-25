@@ -18,23 +18,12 @@ public class CategoryController : ControllerBase
     }
 
     [HttpGet("GetCategories")]
-    public async Task<ActionResult<List<Category>>> Get()
+    public async Task<ActionResult<List<Models.Type>>> Get()
     {
-        List<Category> categories = await _bl.GetCategoriesAsync();
+        List<Models.Type> categories = await _bl.GetCategoriesAsync();
         if (categories != null)
         {
             return Ok(categories);
-        }
-        return NoContent();
-    }
-
-    [HttpGet("GetSubCategories/{category_id}")]
-    public async Task<ActionResult<List<Subcategory>>> GetSubcategories(int category_id)
-    {
-        List<Subcategory> subcategories = await _bl.GetSubcategoriesAsync(category_id);
-        if (subcategories != null)
-        {
-            return Ok(subcategories);
         }
         return NoContent();
     }
