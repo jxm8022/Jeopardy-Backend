@@ -14,6 +14,8 @@ public class Business : IBusiness
 
     // Question
     public async Task<List<QA>> GetQuestionsAsync(int subcategory) { return await _repo.GetQuestionsAsync(subcategory); }
+    public async Task<int> CreateQuestionAsync(Question question) { return await _repo.CreateQuestionAsync(question); }
+    public async Task CreateAnswerAsync(Answer answer) { await _repo.CreateAnswerAsync(answer); }
 
     // Player
     public async Task<Admin> GetAdminAsync(string username, string password) { return await _repo.GetAdminAsync(username, password); }
