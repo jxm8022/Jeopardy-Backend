@@ -19,8 +19,7 @@ public interface IBusiness
     Task CreateTeamsAsync(List<Team> teams);
 
     // Category
-    Task<List<Category>> GetCategoriesAsync();
-    Task<List<Subcategory>> GetSubcategoriesAsync(int category_id);
+    Task<List<Models.Type>> GetCategoriesAsync();
     Task CreateCategoryAsync(string categoryName);
     Task CreateSubcategoryAsync(Subcategory subcategory);
 }

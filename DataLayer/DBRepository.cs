@@ -28,8 +28,7 @@ public class DBRepository : IRepository
     public async Task CreateTeamsAsync(List<Team> teams) { await DBTeam.CreateTeams(teams, _connectionString); }
 
     // Category
-    public async Task<List<Category>> GetCategoriesAsync() { return await DBCategory.GetCategories(_connectionString); }
-    public async Task<List<Subcategory>> GetSubcategoriesAsync(int category_id) { return await DBCategory.GetSubcategories(category_id, _connectionString); }
+    public async Task<List<Models.Type>> GetCategoriesAsync() { return await DBCategory.GetCategories(_connectionString); }
     public async Task CreateCategoryAsync(string categoryName) { await DBCategory.CreateCategory(categoryName, _connectionString); }
     public async Task CreateSubcategoryAsync(Subcategory subcategory) { await DBCategory.CreateSubcategory(subcategory, _connectionString); }
 }

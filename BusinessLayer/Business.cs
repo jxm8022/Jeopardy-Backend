@@ -28,8 +28,7 @@ public class Business : IBusiness
     public async Task CreateTeamsAsync(List<Team> teams) { await _repo.CreateTeamsAsync(teams); }
 
     // Category
-    public async Task<List<Category>> GetCategoriesAsync() { return await _repo.GetCategoriesAsync(); }
-    public async Task<List<Subcategory>> GetSubcategoriesAsync(int category_id) { return await _repo.GetSubcategoriesAsync(category_id); }
+    public async Task<List<Models.Type>> GetCategoriesAsync() { return await _repo.GetCategoriesAsync(); }
     public async Task CreateCategoryAsync(string categoryName) { await _repo.CreateCategoryAsync(categoryName); }
     public async Task CreateSubcategoryAsync(Subcategory subcategory) { await _repo.CreateSubcategoryAsync(subcategory); }
 }
