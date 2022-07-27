@@ -17,10 +17,16 @@ public class QuestionController : ControllerBase
         _logger = logger;
     }
 
-    [HttpGet("GetQuestions/{subcategory}")]
-    public async Task<ActionResult<List<QA>>> Get(int subcategory)
+    [HttpGet("GetQuestions/{c1}&{c2}&{c3}&{c4}&{c5}")]
+    public async Task<ActionResult<List<List<QA>>>> Get(int c1, int c2, int c3, int c4, int c5) // five categories
     {
-        List<QA> questions = await _bl.GetQuestionsAsync(subcategory);
+        List<int> subcategories = new List<int>();
+        subcategories.Add(c1);
+        subcategories.Add(c2);
+        subcategories.Add(c3);
+        subcategories.Add(c4);
+        subcategories.Add(c5);
+        List<List<QA>> questions = await _bl.GetQuestionsAsync(subcategories);
         if (questions != null)
         {
             return Ok(questions);
