@@ -28,6 +28,17 @@ public class QuestionController : ControllerBase
         return NoContent();
     }
 
+    [HttpGet("GetAllQuestions/{subcategory}")]
+    public async Task<ActionResult<List<Question>>> GetAll(int subcategory)
+    {
+        List<Question> questions = await _bl.GetAllQuestionsAsync(subcategory);
+        if (questions != null)
+        {
+            return Ok(questions);
+        }
+        return NoContent();
+    }
+
     [HttpPost("CreateQuestion")]
     public async Task<ActionResult> PostQuestion(QA question)
     {
