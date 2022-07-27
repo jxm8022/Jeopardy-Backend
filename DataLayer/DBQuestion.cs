@@ -49,6 +49,40 @@ public static class DBQuestion
         });
     }
 
+    public static async Task<List<Question>> GetAllQuestions(int subcategory, string _connectionString)
+    {
+        return await Task.Factory.StartNew(() =>
+        {
+            List<Question> questions = new List<Question>();
+            DataSet questionSet = new DataSet();
+
+            using SqlConnection connection = new SqlConnection(_connectionString);
+            using SqlCommand cmd = new SqlCommand("SELECT * FROM Question WHERE category_id = @category_id", connection);
+            cmd.Parameters.AddWithValue("@category_id", subcategory);
+
+            SqlDataAdapter questionAdapter = new SqlDataAdapter(cmd);
+
+            questionAdapter.Fill(questionSet, "QuestionTable");
+
+            DataTable? questionTable = questionSet.Tables["QuestionTable"];
+            if (questionTable != null && questionTable.Rows.Count > 0)
+            {
+                foreach (DataRow row in questionTable.Rows)
+                {
+                    Question question = new Question
+                    {
+                        question_id = (int)row["question_id"],
+                        question_entry = (string)row["question_entry"],
+                        category_id = (int)row["category_id"]
+                    };
+                    questions.Add(question);
+                }
+                return questions;
+            }
+            return null!;
+        });
+    }
+
     public static async Task<int> CreateQuestion(Question question, string _connectionString)
     {
         return await Task.Factory.StartNew(() =>
