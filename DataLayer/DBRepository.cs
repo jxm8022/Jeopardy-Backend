@@ -32,4 +32,7 @@ public class DBRepository : IRepository
     public async Task<List<Models.Type>> GetCategoriesAsync() { return await DBCategory.GetCategories(_connectionString); }
     public async Task CreateCategoryAsync(string categoryName) { await DBCategory.CreateCategory(categoryName, _connectionString); }
     public async Task CreateSubcategoryAsync(Subcategory subcategory) { await DBCategory.CreateSubcategory(subcategory, _connectionString); }
+
+    // Game
+    public async Task<List<GameUI>> GetSavedGamesAsync() { return await DBGame.GetSavedGames(_connectionString); }
 }

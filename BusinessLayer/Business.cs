@@ -32,4 +32,7 @@ public class Business : IBusiness
     public async Task<List<Models.Type>> GetCategoriesAsync() { return await _repo.GetCategoriesAsync(); }
     public async Task CreateCategoryAsync(string categoryName) { await _repo.CreateCategoryAsync(categoryName); }
     public async Task CreateSubcategoryAsync(Subcategory subcategory) { await _repo.CreateSubcategoryAsync(subcategory); }
+
+    // Game
+    public async Task<List<GameUI>> GetSavedGamesAsync() { return await _repo.GetSavedGamesAsync(); }
 }
