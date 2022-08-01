@@ -34,5 +34,8 @@ public class DBRepository : IRepository
     public async Task CreateSubcategoryAsync(Subcategory subcategory) { await DBCategory.CreateSubcategory(subcategory, _connectionString); }
 
     // Game
+    public async Task<int> CreateGameAsync(Game game) { return await DBGame.CreateGame(game, _connectionString); }
+    public async Task CreateGamestateAsync(List<Gamestate> gamestates) { await DBGame.CreateGamestate(gamestates, _connectionString); }
+    public async Task CreateBoardstateAsync(List<Boardstate> boardstates) { await DBGame.CreateBoardstate(boardstates, _connectionString); }
     public async Task<List<GameUI>> GetSavedGamesAsync() { return await DBGame.GetSavedGames(_connectionString); }
 }

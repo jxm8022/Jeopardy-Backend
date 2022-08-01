@@ -25,5 +25,8 @@ public interface IRepository
     Task CreateSubcategoryAsync(Subcategory subcategory);
 
     // Game
+    Task<int> CreateGameAsync(Game game);
+    Task CreateGamestateAsync(List<Gamestate> gamestates);
+    Task CreateBoardstateAsync(List<Boardstate> boardstates);
     Task<List<GameUI>> GetSavedGamesAsync();
 }

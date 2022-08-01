@@ -6,6 +6,128 @@ namespace DataLayer;
 
 public static class DBGame
 {
+    public static async Task<int> CreateGame(Game game, string _connectionString)
+    {
+        return await Task.Factory.StartNew(() =>
+        {
+            DataSet gameSet = new DataSet();
+
+            using SqlConnection connection = new SqlConnection(_connectionString);
+            using SqlCommand cmd = new SqlCommand("SELECT current_team FROM Game WHERE game_id = -1", connection);
+
+            SqlDataAdapter gameAdapter = new SqlDataAdapter(cmd);
+
+            gameAdapter.Fill(gameSet, "GameTable");
+
+            DataTable? gameTable = gameSet.Tables["GameTable"];
+            if (gameTable != null)
+            {
+                DataRow newRow = gameTable.NewRow();
+                newRow["current_team"] = game.current_team;
+
+                gameTable.Rows.Add(newRow);
+
+                SqlCommandBuilder commandBuilder = new SqlCommandBuilder(gameAdapter);
+                SqlCommand insert = commandBuilder.GetInsertCommand();
+
+                gameAdapter.InsertCommand = insert;
+
+                gameAdapter.Update(gameTable);
+            }
+
+            gameSet = new DataSet();
+
+            using SqlCommand cmd2 = new SqlCommand("SELECT * FROM Game ORDER BY question_id DESC", connection);
+
+            gameAdapter = new SqlDataAdapter(cmd2);
+
+            gameAdapter.Fill(gameSet, "GameTable");
+
+            gameTable = gameSet.Tables["GameTable"];
+            if (gameTable != null && gameTable.Rows.Count > 0)
+            {
+                return (int)gameTable.Rows[0]["game_id"];
+            }
+
+            return -1;
+        });
+    }
+
+    public static async Task CreateGamestate(List<Gamestate> gamestates, string _connectionString)
+    {
+        await Task.Factory.StartNew(() =>
+        {
+            DataSet gameSet = new DataSet();
+
+            using SqlConnection connection = new SqlConnection(_connectionString);
+
+            using SqlCommand cmd = new SqlCommand("SELECT * FROM Gamestate WHERE gamestate_id = -1", connection);
+
+            SqlDataAdapter gameAdapter = new SqlDataAdapter(cmd);
+
+            gameAdapter.Fill(gameSet, "GameTable");
+
+            DataTable? gameTable = gameSet.Tables["GameTable"];
+            if (gameTable != null)
+            {
+                foreach (Gamestate gamestate in gamestates)
+                {
+                    DataRow newRow = gameTable.NewRow();
+                    newRow["team_id"] = gamestate.team_id;
+                    newRow["game_id"] = gamestate.game_id;
+
+                    gameTable.Rows.Add(newRow);
+                }
+
+                SqlCommandBuilder commandBuilder = new SqlCommandBuilder(gameAdapter);
+                SqlCommand insert = commandBuilder.GetInsertCommand();
+
+                gameAdapter.InsertCommand = insert;
+
+                gameAdapter.Update(gameTable);
+            }
+        });
+    }
+
+    public static async Task CreateBoardstate(List<Boardstate> boardstates, string _connectionString)
+    {
+        await Task.Factory.StartNew(() =>
+        {
+            DataSet boardSet = new DataSet();
+
+            using SqlConnection connection = new SqlConnection(_connectionString);
+
+            using SqlCommand cmd = new SqlCommand("SELECT * FROM Boardstate WHERE boardstate_id = -1", connection);
+
+            SqlDataAdapter boardAdapter = new SqlDataAdapter(cmd);
+
+            boardAdapter.Fill(boardSet, "BoardTable");
+
+            DataTable? boardTable = boardSet.Tables["BoardTable"];
+            if (boardTable != null)
+            {
+                foreach (Boardstate boardstate in boardstates)
+                {
+                    DataRow newRow = boardTable.NewRow();
+                    newRow["x_position"] = boardstate.x_position;
+                    newRow["y_posistion"] = boardstate.y_position;
+                    newRow["answered"] = boardstate.answered;
+                    newRow["question_id"] = boardstate.question_id;
+                    newRow["game_id"] = boardstate.game_id;
+
+                    boardTable.Rows.Add(newRow);
+                }
+
+                SqlCommandBuilder commandBuilder = new SqlCommandBuilder(boardAdapter);
+                SqlCommand insert = commandBuilder.GetInsertCommand();
+
+                boardAdapter.InsertCommand = insert;
+
+                boardAdapter.Update(boardTable);
+            }
+        });
+    }
+
     public static async Task<List<GameUI>> GetSavedGames(string _connectionString)
     {
         return await Task.Factory.StartNew(() =>
