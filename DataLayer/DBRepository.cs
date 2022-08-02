@@ -25,7 +25,7 @@ public class DBRepository : IRepository
 
     // Team
     public async Task<List<Team>> GetTeamsSortedbyScoreAsync() { return await DBTeam.GetTeamsSortedbyScore(_connectionString); }
-    public async Task UpdateTeamAsync(Team team) { await DBTeam.UpdateTeam(team, _connectionString); }
+    public async Task UpdateTeamsAsync(List<Team> teams) { await DBTeam.UpdateTeams(teams, _connectionString); }
     public async Task CreateTeamsAsync(List<Team> teams) { await DBTeam.CreateTeams(teams, _connectionString); }
 
     // Category

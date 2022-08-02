@@ -25,6 +25,26 @@ public class GameController : ControllerBase
             int game_id = await _bl.CreateGameAsync(gameui.game);
             if (game_id > 0)
             {
+                await _bl.CreateTeamsAsync(gameui.teams);
+                List<Team> allTeams = await _bl.GetTeamsSortedbyScoreAsync();
+                for (int i = 0; i < gameui.teams.Count; i++)
+                {
+                    foreach (Team team in allTeams)
+                    {
+                        if (team.team_name == gameui.teams[i].team_name && team.team_score == gameui.teams[i].team_score)
+                        {
+                            gameui.teams[i].team_id = team.team_id;
+                        }
+                    }
+                    for (int j = 0; j < gameui.players[i].Count; j++)
+                    {
+                        if (gameui.teams[i].team_id > 0)
+                        {
+                            gameui.players[i][j].team_id = gameui.teams[i].team_id;
+                        }
+                    }
+                }
+                await _bl.CreatePlayersAsync(gameui.players);
                 List<Gamestate> gamestates = new List<Gamestate>();
                 foreach (Team team in gameui.teams)
                 {

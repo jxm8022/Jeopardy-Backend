@@ -16,7 +16,7 @@ public interface IRepository
 
     // Team
     Task<List<Team>> GetTeamsSortedbyScoreAsync();
-    Task UpdateTeamAsync(Team team);
+    Task UpdateTeamsAsync(List<Team> teams);
     Task CreateTeamsAsync(List<Team> teams);
 
     // Category

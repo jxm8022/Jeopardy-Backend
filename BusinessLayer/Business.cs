@@ -25,7 +25,7 @@ public class Business : IBusiness
 
     // Team
     public async Task<List<Team>> GetTeamsSortedbyScoreAsync() { return await _repo.GetTeamsSortedbyScoreAsync(); }
-    public async Task UpdateTeamAsync(Team team) { await _repo.UpdateTeamAsync(team); }
+    public async Task UpdateTeamsAsync(List<Team> teams) { await _repo.UpdateTeamsAsync(teams); }
     public async Task CreateTeamsAsync(List<Team> teams) { await _repo.CreateTeamsAsync(teams); }
 
     // Category
