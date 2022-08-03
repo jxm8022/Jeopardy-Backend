@@ -315,4 +315,165 @@ public static class DBGame
         }
         return null!;
     }
+
+    public static async Task DeleteBoardstates(int game_id, string _connectionString)
+    {
+        await Task.Factory.StartNew(() =>
+        {
+            DataSet boardSet = new DataSet();
+
+            using SqlConnection connection = new SqlConnection(_connectionString);
+
+            using SqlCommand cmd = new SqlCommand("DELETE FROM Boardstate WHERE game_id = @game_id", connection);
+            cmd.Parameters.AddWithValue("@game_id", game_id);
+
+            SqlDataAdapter boardAdapter = new SqlDataAdapter(cmd);
+
+            boardAdapter.Fill(boardSet, "BoardTable");
+
+            DataTable? boardTable = boardSet.Tables["BoardTable"];
+            if (boardTable != null)
+            {
+
+                SqlCommandBuilder commandBuilder = new SqlCommandBuilder(boardAdapter);
+                SqlCommand delete = commandBuilder.GetDeleteCommand();
+
+                boardAdapter.DeleteCommand = delete;
+
+                boardAdapter.Update(boardTable);
+            }
+        });
+    }
+    public static async Task DeleteGamestates(int game_id, string _connectionString)
+    {
+        await Task.Factory.StartNew(() =>
+        {
+            DataSet gameSet = new DataSet();
+
+            using SqlConnection connection = new SqlConnection(_connectionString);
+
+            using SqlCommand cmd = new SqlCommand("DELETE FROM Gamestate WHERE game_id = @game_id", connection);
+            cmd.Parameters.AddWithValue("@game_id", game_id);
+
+            SqlDataAdapter gameAdapter = new SqlDataAdapter(cmd);
+
+            gameAdapter.Fill(gameSet, "GameTable");
+
+            DataTable? gameTable = gameSet.Tables["GameTable"];
+            if (gameTable != null)
+            {
+
+                SqlCommandBuilder commandBuilder = new SqlCommandBuilder(gameAdapter);
+                SqlCommand delete = commandBuilder.GetDeleteCommand();
+
+                gameAdapter.DeleteCommand = delete;
+
+                gameAdapter.Update(gameTable);
+            }
+        });
+    }
+    public static async Task DeleteGame(int game_id, string _connectionString)
+    {
+        await Task.Factory.StartNew(() =>
+        {
+            DataSet gameSet = new DataSet();
+
+            using SqlConnection connection = new SqlConnection(_connectionString);
+
+            using SqlCommand cmd = new SqlCommand("DELETE FROM Game WHERE game_id = @game_id", connection);
+            cmd.Parameters.AddWithValue("@game_id", game_id);
+
+            SqlDataAdapter gameAdapter = new SqlDataAdapter(cmd);
+
+            gameAdapter.Fill(gameSet, "GameTable");
+
+            DataTable? gameTable = gameSet.Tables["GameTable"];
+            if (gameTable != null)
+            {
+
+                SqlCommandBuilder commandBuilder = new SqlCommandBuilder(gameAdapter);
+                SqlCommand delete = commandBuilder.GetDeleteCommand();
+
+                gameAdapter.DeleteCommand = delete;
+
+                gameAdapter.Update(gameTable);
+            }
+        });
+    }
+    public static async Task UpdateGame(Game game, string _connectionString)
+    {
+        await Task.Factory.StartNew(() =>
+        {
+            DataSet gameSet = new DataSet();
+
+            using SqlConnection connection = new SqlConnection(_connectionString);
+            using SqlCommand cmd = new SqlCommand("SELECT * FROM Game WHERE game_id = @game_id", connection);
+            cmd.Parameters.AddWithValue("@game_id", game.game_id);
+
+            SqlDataAdapter gameAdapter = new SqlDataAdapter(cmd);
+
+            gameAdapter.Fill(gameSet, "GameTable");
+
+            DataTable? gameTable = gameSet.Tables["GameTable"];
+            if (gameTable != null && gameTable.Rows.Count > 0)
+            {
+                DataColumn[] dt = new DataColumn[1];
+                dt[0] = gameTable.Columns["game_id"]!;
+                gameTable.PrimaryKey = dt;
+                DataRow? gameRow = gameTable.Rows.Find(game.game_id);
+                if (gameRow != null)
+                {
+                    gameRow["game_winner"] = game.game_winner;
+                    gameRow["current_team"] = game.current_team;
+                }
+
+                SqlCommandBuilder commandBuilder = new SqlCommandBuilder(gameAdapter);
+                SqlCommand updateCmd = commandBuilder.GetUpdateCommand();
+
+                gameAdapter.UpdateCommand = updateCmd;
+                gameAdapter.Update(gameTable);
+            }
+        });
+    }
+    public static async Task UpdateBoardstates(List<Boardstate> boardstates, string _connectionString)
+    {
+        await Task.Factory.StartNew(() =>
+        {
+            foreach (Boardstate boardstate in boardstates)
+            {
+                UpdateBoardstate(boardstate, _connectionString);
+            }
+        });
+    }
+    private static void UpdateBoardstate(Boardstate boardstate, string _connectionString)
+    {
+        DataSet boardSet = new DataSet();
+
+        using SqlConnection connection = new SqlConnection(_connectionString);
+        using SqlCommand cmd = new SqlCommand("SELECT * FROM Boardstate WHERE boardstate_id = @boardstate_id", connection);
+        cmd.Parameters.AddWithValue("@boardstate_id", boardstate.boardstate_id);
+
+        SqlDataAdapter boardAdapter = new SqlDataAdapter(cmd);
+
+        boardAdapter.Fill(boardSet, "BoardTable");
+
+        DataTable? boardTable = boardSet.Tables["BoardTable"];
+        if (boardTable != null && boardTable.Rows.Count > 0)
+        {
+            DataColumn[] dt = new DataColumn[1];
+            dt[0] = boardTable.Columns["boardstate_id"]!;
+            boardTable.PrimaryKey = dt;
+            DataRow? boardRow = boardTable.Rows.Find(boardstate.boardstate_id);
+            if (boardRow != null)
+            {
+                boardRow["answered"] = boardstate.answered;
+            }
+
+            SqlCommandBuilder commandBuilder = new SqlCommandBuilder(boardAdapter);
+            SqlCommand updateCmd = commandBuilder.GetUpdateCommand();
+
+            boardAdapter.UpdateCommand = updateCmd;
+            boardAdapter.Update(boardTable);
+        }
+    }
 }

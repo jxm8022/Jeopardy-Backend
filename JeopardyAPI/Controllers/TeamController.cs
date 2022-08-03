@@ -27,21 +27,4 @@ public class TeamController : ControllerBase
         }
         return NoContent();
     }
-
-    [HttpPut("UpdateTeam")]
-    public async Task Put(Team team)
-    {
-        await _bl.UpdateTeamAsync(team);
-    }
-
-    [HttpPost("CreateTeams")]
-    public async Task<ActionResult> Post(List<Team> teams)
-    {
-        if (teams != null && teams.Count > 0)
-        {
-            await _bl.CreateTeamsAsync(teams);
-            return Ok();
-        }
-        return NoContent();
-    }
 }

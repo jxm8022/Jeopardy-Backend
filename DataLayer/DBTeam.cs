@@ -38,39 +38,46 @@ public static class DBTeam
             return null!;
         });
     }
-    public static async Task UpdateTeam(Team team, string _connectionString)
+    public static async Task UpdateTeams(List<Team> teams, string _connectionString)
     {
         await Task.Factory.StartNew(() =>
         {
-            DataSet teamSet = new DataSet();
-
-            using SqlConnection connection = new SqlConnection(_connectionString);
-            using SqlCommand cmd = new SqlCommand("SELECT * FROM Team WHERE team_id = @team_id", connection);
-            cmd.Parameters.AddWithValue("@team_id", team.team_id);
-
-            SqlDataAdapter teamAdapter = new SqlDataAdapter(cmd);
-
-            teamAdapter.Fill(teamSet, "TeamTable");
-
-            DataTable? teamTable = teamSet.Tables["TeamTable"];
-            if (teamTable != null && teamTable.Rows.Count > 0)
+            foreach (Team team in teams)
             {
-                DataColumn[] dt = new DataColumn[1];
-                dt[0] = teamTable.Columns["team_id"]!;
-                teamTable.PrimaryKey = dt;
-                DataRow? teamRow = teamTable.Rows.Find(team.team_id);
-                if (teamRow != null)
-                {
-                    teamRow["team_score"] = team.team_score;
-                }
-
-                SqlCommandBuilder commandBuilder = new SqlCommandBuilder(teamAdapter);
-                SqlCommand updateCmd = commandBuilder.GetUpdateCommand();
-
-                teamAdapter.UpdateCommand = updateCmd;
-                teamAdapter.Update(teamTable);
+                UpdateTeam(team, _connectionString);
             }
         });
+    }
+    private static void UpdateTeam(Team team, string _connectionString)
+    {
+        DataSet teamSet = new DataSet();
+
+        using SqlConnection connection = new SqlConnection(_connectionString);
+        using SqlCommand cmd = new SqlCommand("SELECT * FROM Team WHERE team_id = @team_id", connection);
+        cmd.Parameters.AddWithValue("@team_id", team.team_id);
+
+        SqlDataAdapter teamAdapter = new SqlDataAdapter(cmd);
+
+        teamAdapter.Fill(teamSet, "TeamTable");
+
+        DataTable? teamTable = teamSet.Tables["TeamTable"];
+        if (teamTable != null && teamTable.Rows.Count > 0)
+        {
+            DataColumn[] dt = new DataColumn[1];
+            dt[0] = teamTable.Columns["team_id"]!;
+            teamTable.PrimaryKey = dt;
+            DataRow? teamRow = teamTable.Rows.Find(team.team_id);
+            if (teamRow != null)
+            {
+                teamRow["team_score"] = team.team_score;
+            }
+
+            SqlCommandBuilder commandBuilder = new SqlCommandBuilder(teamAdapter);
+            SqlCommand updateCmd = commandBuilder.GetUpdateCommand();
+
+            teamAdapter.UpdateCommand = updateCmd;
+            teamAdapter.Update(teamTable);
+        }
     }
     public static async Task CreateTeams(List<Team> teams, string _connectionString)
     {

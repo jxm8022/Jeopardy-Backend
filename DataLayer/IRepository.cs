@@ -16,7 +16,7 @@ public interface IRepository
 
     // Team
     Task<List<Team>> GetTeamsSortedbyScoreAsync();
-    Task UpdateTeamAsync(Team team);
+    Task UpdateTeamsAsync(List<Team> teams);
     Task CreateTeamsAsync(List<Team> teams);
 
     // Category
@@ -29,4 +29,9 @@ public interface IRepository
     Task CreateGamestateAsync(List<Gamestate> gamestates);
     Task CreateBoardstateAsync(List<Boardstate> boardstates);
     Task<List<GameUI>> GetSavedGamesAsync();
+    Task DeleteBoardstatesAsync(int game_id);
+    Task DeleteGamestatesAsync(int game_id);
+    Task DeleteGameAsync(int game_id);
+    Task UpdateGameAsync(Game game);
+    Task UpdateBoardstatesAsync(List<Boardstate> boardstates);
 }

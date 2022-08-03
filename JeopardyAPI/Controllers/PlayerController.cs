@@ -38,15 +38,4 @@ public class PlayerController : ControllerBase
         }
         return NoContent();
     }
-
-    [HttpPost("CreatePlayers")]
-    public async Task<ActionResult> Post(List<List<Player>> players)
-    {
-        if (players != null)
-        {
-            await _bl.CreatePlayersAsync(players);
-            return Ok();
-        }
-        return NoContent();
-    }
 }

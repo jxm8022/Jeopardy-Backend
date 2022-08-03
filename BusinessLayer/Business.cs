@@ -25,7 +25,7 @@ public class Business : IBusiness
 
     // Team
     public async Task<List<Team>> GetTeamsSortedbyScoreAsync() { return await _repo.GetTeamsSortedbyScoreAsync(); }
-    public async Task UpdateTeamAsync(Team team) { await _repo.UpdateTeamAsync(team); }
+    public async Task UpdateTeamsAsync(List<Team> teams) { await _repo.UpdateTeamsAsync(teams); }
     public async Task CreateTeamsAsync(List<Team> teams) { await _repo.CreateTeamsAsync(teams); }
 
     // Category
@@ -38,4 +38,9 @@ public class Business : IBusiness
     public async Task CreateGamestateAsync(List<Gamestate> gamestates) { await _repo.CreateGamestateAsync(gamestates); }
     public async Task CreateBoardstateAsync(List<Boardstate> boardstates) { await _repo.CreateBoardstateAsync(boardstates); }
     public async Task<List<GameUI>> GetSavedGamesAsync() { return await _repo.GetSavedGamesAsync(); }
+    public async Task DeleteBoardstatesAsync(int game_id) { await _repo.DeleteBoardstatesAsync(game_id); }
+    public async Task DeleteGamestatesAsync(int game_id) { await _repo.DeleteGamestatesAsync(game_id); }
+    public async Task DeleteGameAsync(int game_id) { await _repo.DeleteGameAsync(game_id); }
+    public async Task UpdateGameAsync(Game game) { await _repo.UpdateGameAsync(game); }
+    public async Task UpdateBoardstatesAsync(List<Boardstate> boardstates) { await _repo.UpdateBoardstatesAsync(boardstates); }
 }

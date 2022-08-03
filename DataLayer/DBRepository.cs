@@ -25,7 +25,7 @@ public class DBRepository : IRepository
 
     // Team
     public async Task<List<Team>> GetTeamsSortedbyScoreAsync() { return await DBTeam.GetTeamsSortedbyScore(_connectionString); }
-    public async Task UpdateTeamAsync(Team team) { await DBTeam.UpdateTeam(team, _connectionString); }
+    public async Task UpdateTeamsAsync(List<Team> teams) { await DBTeam.UpdateTeams(teams, _connectionString); }
     public async Task CreateTeamsAsync(List<Team> teams) { await DBTeam.CreateTeams(teams, _connectionString); }
 
     // Category
@@ -38,4 +38,9 @@ public class DBRepository : IRepository
     public async Task CreateGamestateAsync(List<Gamestate> gamestates) { await DBGame.CreateGamestate(gamestates, _connectionString); }
     public async Task CreateBoardstateAsync(List<Boardstate> boardstates) { await DBGame.CreateBoardstate(boardstates, _connectionString); }
     public async Task<List<GameUI>> GetSavedGamesAsync() { return await DBGame.GetSavedGames(_connectionString); }
+    public async Task DeleteBoardstatesAsync(int game_id) { await DBGame.DeleteBoardstates(game_id, _connectionString); }
+    public async Task DeleteGamestatesAsync(int game_id) { await DBGame.DeleteGamestates(game_id, _connectionString); }
+    public async Task DeleteGameAsync(int game_id) { await DBGame.DeleteGame(game_id, _connectionString); }
+    public async Task UpdateGameAsync(Game game) { await DBGame.UpdateGame(game, _connectionString); }
+    public async Task UpdateBoardstatesAsync(List<Boardstate> boardstates) { await DBGame.UpdateBoardstates(boardstates, _connectionString); }
 }
