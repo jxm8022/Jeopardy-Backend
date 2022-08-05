@@ -20,7 +20,7 @@ public class GameController : ControllerBase
     [HttpPost("CreateSavedGame")]
     public async Task<ActionResult> Post(GameUI gameui)
     {
-        if (gameui.game.current_team > 0 && gameui.teams.Count > 0 && gameui.questions.Count > 0 && gameui.boardstate.Count > 0)
+        if (gameui.teams.Count > 0 && gameui.players.Count > 0 && gameui.boardstate.Count > 0) // eventually check for current team with gameui.game.current_team > 0 && 
         {
             // =======================================================
             // getting game id for new saved game
@@ -74,7 +74,7 @@ public class GameController : ControllerBase
                 {
                     boardstate.game_id = game_id;
                 }
-                await _bl.CreateBoardstateAsync(gameui.boardstate);
+                await _bl.CreateBoardstateAsync(gameui.boardstate); // can improve frontend by reading questions and isquestionanswered AND then build boardstate here instead of frontend
                 return Ok();
             }
             return NoContent();
