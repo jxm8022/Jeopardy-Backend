@@ -466,7 +466,10 @@ public static class DBGame
             DataRow? boardRow = boardTable.Rows.Find(boardstate.boardstate_id);
             if (boardRow != null)
             {
-                boardRow["answered"] = boardstate.answered;
+                if (boardstate.answered)
+                    boardRow["answered"] = 1;
+                else
+                    boardRow["answered"] = 0;
             }
 
             SqlCommandBuilder commandBuilder = new SqlCommandBuilder(boardAdapter);
