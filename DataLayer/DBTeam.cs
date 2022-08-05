@@ -53,7 +53,7 @@ public static class DBTeam
         DataSet teamSet = new DataSet();
 
         using SqlConnection connection = new SqlConnection(_connectionString);
-        using SqlCommand cmd = new SqlCommand("SELECT * FROM Team WHERE team_id = @team_id", connection);
+        using SqlCommand cmd = new SqlCommand("SELECT team_id, team_score FROM Team WHERE team_id = @team_id", connection);
         cmd.Parameters.AddWithValue("@team_id", team.team_id);
 
         SqlDataAdapter teamAdapter = new SqlDataAdapter(cmd);

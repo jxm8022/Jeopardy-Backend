@@ -20,7 +20,7 @@ public class GameController : ControllerBase
     [HttpPost("CreateSavedGame")]
     public async Task<ActionResult> Post(GameUI gameui)
     {
-        if (gameui.game.current_team > 0 && gameui.teams.Count > 0 && gameui.players.Count > 0 && gameui.boardstate.Count > 0)
+        if (gameui.game.current_team >= 0 && gameui.teams.Count > 0 && gameui.players.Count > 0 && gameui.boardstate.Count > 0)
         {
             // =======================================================
             // getting game id for new saved game
