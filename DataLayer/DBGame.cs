@@ -61,7 +61,7 @@ public static class DBGame
 
             using SqlConnection connection = new SqlConnection(_connectionString);
 
-            using SqlCommand cmd = new SqlCommand("SELECT * FROM Gamestate WHERE gamestate_id = -1", connection);
+            using SqlCommand cmd = new SqlCommand("SELECT team_id, game_id FROM Gamestate WHERE gamestate_id = -1", connection);
 
             SqlDataAdapter gameAdapter = new SqlDataAdapter(cmd);
 
@@ -97,7 +97,7 @@ public static class DBGame
 
             using SqlConnection connection = new SqlConnection(_connectionString);
 
-            using SqlCommand cmd = new SqlCommand("SELECT * FROM Boardstate WHERE boardstate_id = -1", connection);
+            using SqlCommand cmd = new SqlCommand("SELECT x_position, y_posistion, answered, question_id, game_id FROM Boardstate WHERE boardstate_id = -1", connection);
 
             SqlDataAdapter boardAdapter = new SqlDataAdapter(cmd);
 
