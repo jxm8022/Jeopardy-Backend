@@ -37,7 +37,7 @@ public static class DBGame
 
             gameSet = new DataSet();
 
-            using SqlCommand cmd2 = new SqlCommand("SELECT * FROM Game ORDER BY question_id DESC", connection);
+            using SqlCommand cmd2 = new SqlCommand("SELECT game_id FROM Game ORDER BY game_id DESC", connection);
 
             gameAdapter = new SqlDataAdapter(cmd2);
 
