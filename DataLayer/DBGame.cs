@@ -407,7 +407,7 @@ public static class DBGame
             DataSet gameSet = new DataSet();
 
             using SqlConnection connection = new SqlConnection(_connectionString);
-            using SqlCommand cmd = new SqlCommand("SELECT * FROM Game WHERE game_id = @game_id", connection);
+            using SqlCommand cmd = new SqlCommand("SELECT game_id, game_winner, current_team FROM Game WHERE game_id = @game_id", connection);
             cmd.Parameters.AddWithValue("@game_id", game.game_id);
 
             SqlDataAdapter gameAdapter = new SqlDataAdapter(cmd);
@@ -450,7 +450,7 @@ public static class DBGame
         DataSet boardSet = new DataSet();
 
         using SqlConnection connection = new SqlConnection(_connectionString);
-        using SqlCommand cmd = new SqlCommand("SELECT answered FROM Boardstate WHERE boardstate_id = @boardstate_id", connection);
+        using SqlCommand cmd = new SqlCommand("SELECT boardstate_id, answered FROM Boardstate WHERE boardstate_id = @boardstate_id", connection);
         cmd.Parameters.AddWithValue("@boardstate_id", boardstate.boardstate_id);
 
         SqlDataAdapter boardAdapter = new SqlDataAdapter(cmd);
