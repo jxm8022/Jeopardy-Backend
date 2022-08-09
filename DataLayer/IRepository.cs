@@ -11,6 +11,7 @@ public interface IRepository
 
     // Player
     Task<Admin> GetAdminAsync(string username, string password);
+    Task<List<Player>> GetPlayersAsync();
     Task<List<Player>> GetTeamMembersAsync(int team_id);
     Task CreatePlayersAsync(List<List<Player>> players);
 
