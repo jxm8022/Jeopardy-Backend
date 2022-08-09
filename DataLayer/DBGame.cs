@@ -135,18 +135,23 @@ public static class DBGame
             List<GameUI> gamesui = new List<GameUI>();
 
             // get gamesui stuff
-            foreach (Game game in GetGames(_connectionString))
+            List<Game> games = GetGames(_connectionString);
+            if (games != null)
             {
-                GameUI gameui = new GameUI();
-                gameui.game = game;
-                gameui.teams = GetTeams(game.game_id, _connectionString);
-                gameui.subcategories = GetSubCats(game.game_id, _connectionString);
-                gameui.questions = GetQuestions(game.game_id, _connectionString);
-                gameui.boardstate = GetBoardState(game.game_id, _connectionString);
-                gamesui.Add(gameui);
+                foreach (Game game in games)
+                {
+                    GameUI gameui = new GameUI();
+                    gameui.game = game;
+                    gameui.teams = GetTeams(game.game_id, _connectionString);
+                    gameui.subcategories = GetSubCats(game.game_id, _connectionString);
+                    gameui.questions = GetQuestions(game.game_id, _connectionString);
+                    gameui.boardstate = GetBoardState(game.game_id, _connectionString);
+                    gamesui.Add(gameui);
+                }
+                return gamesui;
             }
 
-            return gamesui;
+            return null!;
         });
     }
 
