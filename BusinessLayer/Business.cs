@@ -20,6 +20,7 @@ public class Business : IBusiness
 
     // Player
     public async Task<Admin> GetAdminAsync(string username, string password) { return await _repo.GetAdminAsync(username, password); }
+    public async Task<List<Player>> GetPlayersAsync() { return await _repo.GetPlayersAsync(); }
     public async Task<List<Player>> GetTeamMembersAsync(int team_id) { return await _repo.GetTeamMembersAsync(team_id); }
     public async Task CreatePlayersAsync(List<List<Player>> players) { await _repo.CreatePlayersAsync(players); }
 

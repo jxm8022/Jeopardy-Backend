@@ -28,6 +28,17 @@ public class PlayerController : ControllerBase
         return NoContent();
     }
 
+    [HttpGet("GetPlayers")]
+    public async Task<ActionResult<List<Player>>> GetPlayers()
+    {
+        List<Player> players = await _bl.GetPlayersAsync();
+        if (players != null)
+        {
+            return Ok(players);
+        }
+        return NoContent();
+    }
+
     [HttpGet("GetMembers/{team_id}")]
     public async Task<ActionResult<List<Player>>> Get(int team_id)
     {
