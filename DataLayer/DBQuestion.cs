@@ -27,7 +27,7 @@ public static class DBQuestion
         DataSet questionSet = new DataSet();
 
         using SqlConnection connection = new SqlConnection(_connectionString);
-        using SqlCommand cmd = new SqlCommand("SELECT TOP 5 * FROM Question INNER JOIN Answer ON question.question_id = answer.question_id WHERE category_id = @category_id ORDER BY RAND()", connection);
+        using SqlCommand cmd = new SqlCommand("SELECT TOP 5 * FROM Question INNER JOIN Answer ON question.question_id = answer.question_id WHERE category_id = @category_id ORDER BY NEWID()", connection);
         cmd.Parameters.AddWithValue("@category_id", subcategory);
 
         SqlDataAdapter questionAdapter = new SqlDataAdapter(cmd);
