@@ -31,6 +31,7 @@ public class GameController : ControllerBase
                 // checking for existing teams
                 List<Team> allTeams = await _bl.GetTeamsSortedbyScoreAsync(); // can improve way to get team ids
                 List<Team> teamsToCreate = new List<Team>();
+                List<Team> teamsToUpdate = new List<Team>();
                 bool teamExists = false;
                 foreach (Team team in gameui.teams)
                 {
@@ -39,6 +40,7 @@ public class GameController : ControllerBase
                         if (team.team_name == existingTeam.team_name)
                         {
                             teamExists = true;
+                            teamsToUpdate.Add(team);
                         }
                     }
                     if (!teamExists)
@@ -59,9 +61,16 @@ public class GameController : ControllerBase
                     // adding team ids to gameui teams
                     foreach (Team team in allTeams)
                     {
-                        if (team.team_name == gameui.teams[i].team_name && team.team_score == gameui.teams[i].team_score)
+                        if (team.team_name == gameui.teams[i].team_name)
                         {
                             gameui.teams[i].team_id = team.team_id;
+                        }
+                        foreach (Team teamUpdate in teamsToUpdate)
+                        {
+                            if (teamUpdate.team_name == team.team_name)
+                            {
+                                teamUpdate.team_id = team.team_id;
+                            }
                         }
                     }
                     // adding team ids to players
@@ -72,6 +81,21 @@ public class GameController : ControllerBase
                             gameui.players[i][j].team_id = gameui.teams[i].team_id;
                         }
                     }
+                }
+                // adding team ids to teams to update
+                foreach (Team team in allTeams)
+                {
+                    foreach (Team teamUpdate in teamsToUpdate)
+                    {
+                        if (teamUpdate.team_name == team.team_name)
+                        {
+                            teamUpdate.team_id = team.team_id;
+                        }
+                    }
+                }
+                if (teamsToUpdate.Count > 0)
+                {
+                    await _bl.UpdateTeamsAsync(teamsToUpdate);
                 }
                 // =======================================================
                 // checking for existing players
