@@ -1,21 +1,16 @@
 # Jeopardy-Backend
 
-Welcome to the Jeopardy backend! In this repository, an API(JeopardyAPI) was created using ASP.NET. JeoparyAPI will be used with Angular to retrieve information from a local database created using SQLite.
+Welcome to the Jeopardy frontend! In this repository, an Junipardy was created using Angular CLI. Junipardy is a game of Jeopardy to learn .NET in a fun way. The database was created using Azure SQL. ASP.NET was used to create endpoints that the frontend can call. The server was then uploaded to Azure App Services so the server can be hosted over the web. Then, the angular application can call the endpoints to send and retrieve data. The frontend application was also hosted on Azure App Services so it can be accessed over the internet instead of serving it locally. The ASP.NET server and Angular application were both containerized using Docker.
 
 ## About
 
-Jeopary is not an original idea. It uses the original game temple to make learning fun. The game questions revolve around multiple topics. To name a few: Angular, C#, SQL, Principles/Methodologies, etc.
+Jeopary is not an original idea. It uses the original game temple to make learning fun. The game questions revolve around multiple topics. To name a few: Angular, C#, SQL, Principles/Methodologies, etc. The game 'Junipardy' was born when we played Jeopardy as a cohort with Juniper, hence the name. The game is to be treated as a fun way to read notecards. In order to save teams, players, or games, an administrator will need to be logged in. Instead, the game should be used to practice learning topics about Angular, C#, SQL, Principles/Methodologies, etc.
 
 ## Instructions
 
-To use Junipardy with local database:
-* Clone Frontend, Backend, SQLite into one directory
-* In `Jeopardy-Backend/JeopardyAPI/program.cs` comment line 38 and uncomment line 36
-* In `Jeopardy-Frontend/Jeopardy/src/app/service/http.service.ts` change 'apiAzureURL' to 'apiBaseURL'
-  * Ensure the local host url in `Jeopardy-Frontend/Jeopardy/src/environments/environment.ts` mathes the one provided when running `dotnet run` in the next step
-* In `Jeopardy-Backend/JeopardyAPI` run the command `dotnet run`
-* In `Jeopardy-Frontend/Jeopardy` run the command `ng serve`
-* In your browser go to the local host site stated
+To use Junipardy:<br>
+Go to the following website:
+- https://junipardy.azurewebsites.net/
 
 ## Entity Relationship Diagram
 
