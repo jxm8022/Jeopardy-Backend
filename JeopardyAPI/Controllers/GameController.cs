@@ -28,10 +28,32 @@ public class GameController : ControllerBase
             if (game_id > 0)
             {
                 // =======================================================
-                // creating the teams to get team ids
-                await _bl.CreateTeamsAsync(gameui.teams);
-                // getting team ids
+                // checking for existing teams
                 List<Team> allTeams = await _bl.GetTeamsSortedbyScoreAsync(); // can improve way to get team ids
+                List<Team> teamsToCreate = new List<Team>();
+                bool teamExists = false;
+                foreach (Team team in gameui.teams)
+                {
+                    foreach (Team existingTeam in allTeams)
+                    {
+                        if (team.team_name == existingTeam.team_name)
+                        {
+                            teamExists = true;
+                        }
+                    }
+                    if (!teamExists)
+                    {
+                        teamsToCreate.Add(team);
+                    }
+                    teamExists = false;
+                }
+                if (teamsToCreate.Count > 0)
+                {
+                    // creating the teams to get team ids
+                    await _bl.CreateTeamsAsync(teamsToCreate);
+                }
+                // getting new team ids
+                allTeams = await _bl.GetTeamsSortedbyScoreAsync(); // can improve way to get team ids
                 for (int i = 0; i < gameui.teams.Count; i++)
                 {
                     // adding team ids to gameui teams
@@ -52,8 +74,37 @@ public class GameController : ControllerBase
                     }
                 }
                 // =======================================================
-                // creating the players with team ids in object now
-                await _bl.CreatePlayersAsync(gameui.players);
+                // checking for existing players
+                List<Player> allPlayers = await _bl.GetPlayersAsync();
+                List<Player> teamOfPlayersToCreate = new List<Player>();
+                List<List<Player>> playersToCreate = new List<List<Player>>();
+                bool playerExists = false;
+                foreach (List<Player> team in gameui.players)
+                {
+                    foreach (Player player in team)
+                    {
+                        foreach (Player existingPlayer in allPlayers)
+                        {
+                            if (player.player_name == existingPlayer.player_name)
+                            {
+                                playerExists = true;
+                            }
+                        }
+                        if (!playerExists)
+                        {
+                            teamOfPlayersToCreate.Add(player);
+                        }
+                    }
+                    if (teamOfPlayersToCreate.Count > 0)
+                    {
+                        playersToCreate.Add(teamOfPlayersToCreate);
+                    }
+                }
+                if (playersToCreate.Count > 0)
+                {
+                    // creating the players with team ids in object now
+                    await _bl.CreatePlayersAsync(playersToCreate);
+                }
                 // =======================================================
                 // creating game states which is how we know which teams are playing the game
                 List<Gamestate> gamestates = new List<Gamestate>();
