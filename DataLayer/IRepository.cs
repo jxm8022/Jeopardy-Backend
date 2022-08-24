@@ -10,10 +10,16 @@ public interface IRepository
     Task CreateAnswerAsync(Answer answer);
 
     // Player
-    Task<Admin> GetAdminAsync(string username, string password);
     Task<List<Player>> GetPlayersAsync();
     Task<List<Player>> GetTeamMembersAsync(int team_id);
     Task CreatePlayersAsync(List<List<Player>> players);
+
+    // Admin
+    Task<Admin> GetAdminAsync(string username, string password);
+    Task<List<Admin>> GetAllAdminAsync();
+    Task CreateAdminAsync(Admin admin);
+    Task UpdateAdminAsync(Admin admin);
+    Task DeleteAdminAsync(int id);
 
     // Team
     Task<List<Team>> GetTeamsSortedbyScoreAsync();

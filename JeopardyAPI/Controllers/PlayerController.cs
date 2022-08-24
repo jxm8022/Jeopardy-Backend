@@ -17,18 +17,7 @@ public class PlayerController : ControllerBase
         _logger = logger;
     }
 
-    [HttpGet("Admin/{username}/{password}")]
-    public async Task<ActionResult<Admin>> GetAdmin(string username, string password)
-    {
-        Admin admin = await _bl.GetAdminAsync(username, password);
-        if (admin != null)
-        {
-            return Ok(admin);
-        }
-        return NoContent();
-    }
-
-    [HttpGet("GetPlayers")]
+    [HttpGet("GetAllPlayers")]
     public async Task<ActionResult<List<Player>>> GetPlayers()
     {
         List<Player> players = await _bl.GetPlayersAsync();
