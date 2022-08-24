@@ -17,6 +17,51 @@ public class GameController : ControllerBase
         _logger = logger;
     }
 
+    [HttpGet("GetSavedGames")]
+    public async Task<ActionResult<List<GameUI>>> Get()
+    {
+        List<GameUI> games = await _bl.GetSavedGamesAsync();
+        if (games != null)
+        {
+            return Ok(games);
+        }
+        return NoContent();
+    }
+
+    [HttpPut("UpdatingSavedGame")]
+    public async Task<ActionResult> Put(GameUI gameui)
+    {
+        if (gameui.game.game_winner > 0) // game is done and we update the team scores and delete the saved games by their game_id
+        {
+            // =======================================================
+            // deleting the boardstates
+            await _bl.DeleteBoardstatesAsync(gameui.game.game_id);
+            // =======================================================
+            // deleting the gamestates
+            await _bl.DeleteGamestatesAsync(gameui.game.game_id);
+            // =======================================================
+            // deleting the game
+            await _bl.DeleteGameAsync(gameui.game.game_id);
+            // =======================================================
+            // updating the team scores
+            await _bl.UpdateTeamsAsync(gameui.teams);
+            return Ok();
+        }
+        else // game is not done and we update the teams scores, boardstate, current_player, etc.
+        {
+            // =======================================================
+            // updating the team scores
+            await _bl.UpdateTeamsAsync(gameui.teams);
+            // =======================================================
+            // updating the current player
+            await _bl.UpdateGameAsync(gameui.game);
+            // =======================================================
+            // updating the boardstates
+            await _bl.UpdateBoardstatesAsync(gameui.boardstate);
+            return Ok();
+        }
+    }
+
     [HttpPost("CreateSavedGame")]
     public async Task<ActionResult> Post(GameUI gameui)
     {
@@ -153,51 +198,6 @@ public class GameController : ControllerBase
                 return Ok();
             }
             return NoContent();
-        }
-        return NoContent();
-    }
-
-    [HttpPut("UpdatingSavedGame")]
-    public async Task<ActionResult> Put(GameUI gameui)
-    {
-        if (gameui.game.game_winner > 0) // game is done and we update the team scores and delete the saved games by their game_id
-        {
-            // =======================================================
-            // deleting the boardstates
-            await _bl.DeleteBoardstatesAsync(gameui.game.game_id);
-            // =======================================================
-            // deleting the gamestates
-            await _bl.DeleteGamestatesAsync(gameui.game.game_id);
-            // =======================================================
-            // deleting the game
-            await _bl.DeleteGameAsync(gameui.game.game_id);
-            // =======================================================
-            // updating the team scores
-            await _bl.UpdateTeamsAsync(gameui.teams);
-            return Ok();
-        }
-        else // game is not done and we update the teams scores, boardstate, current_player, etc.
-        {
-            // =======================================================
-            // updating the team scores
-            await _bl.UpdateTeamsAsync(gameui.teams);
-            // =======================================================
-            // updating the current player
-            await _bl.UpdateGameAsync(gameui.game);
-            // =======================================================
-            // updating the boardstates
-            await _bl.UpdateBoardstatesAsync(gameui.boardstate);
-            return Ok();
-        }
-    }
-
-    [HttpGet("GetSavedGames")]
-    public async Task<ActionResult<List<GameUI>>> Get()
-    {
-        List<GameUI> games = await _bl.GetSavedGamesAsync();
-        if (games != null)
-        {
-            return Ok(games);
         }
         return NoContent();
     }

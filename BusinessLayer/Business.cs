@@ -19,10 +19,16 @@ public class Business : IBusiness
     public async Task CreateAnswerAsync(Answer answer) { await _repo.CreateAnswerAsync(answer); }
 
     // Player
-    public async Task<Admin> GetAdminAsync(string username, string password) { return await _repo.GetAdminAsync(username, password); }
     public async Task<List<Player>> GetPlayersAsync() { return await _repo.GetPlayersAsync(); }
     public async Task<List<Player>> GetTeamMembersAsync(int team_id) { return await _repo.GetTeamMembersAsync(team_id); }
     public async Task CreatePlayersAsync(List<List<Player>> players) { await _repo.CreatePlayersAsync(players); }
+
+    // Admin
+    public async Task<Admin> GetAdminAsync(string username, string password) { return await _repo.GetAdminAsync(username, password); }
+    public async Task<List<Admin>> GetAllAdminAsync() { return await _repo.GetAllAdminAsync(); }
+    public async Task CreateAdminAsync(Admin admin) { await _repo.CreateAdminAsync(admin); }
+    public async Task UpdateAdminAsync(Admin admin) { await _repo.UpdateAdminAsync(admin); }
+    public async Task DeleteAdminAsync(int id) { await _repo.DeleteAdminAsync(id); }
 
     // Team
     public async Task<List<Team>> GetTeamsSortedbyScoreAsync() { return await _repo.GetTeamsSortedbyScoreAsync(); }

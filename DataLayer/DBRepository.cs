@@ -19,10 +19,16 @@ public class DBRepository : IRepository
     public async Task CreateAnswerAsync(Answer answer) { await DBQuestion.CreateAnswer(answer, _connectionString); }
 
     // Player
-    public async Task<Admin> GetAdminAsync(string username, string password) { return await DBPlayer.GetAdmin(username, password, _connectionString); }
     public async Task<List<Player>> GetPlayersAsync() { return await DBPlayer.GetPlayers(_connectionString); }
     public async Task<List<Player>> GetTeamMembersAsync(int team_id) { return await DBPlayer.GetTeamMembers(team_id, _connectionString); }
     public async Task CreatePlayersAsync(List<List<Player>> players) { await DBPlayer.CreatePlayers(players, _connectionString); }
+
+    // Admin
+    public async Task<Admin> GetAdminAsync(string username, string password) { return await DBAdmin.GetAdmin(username, password, _connectionString); }
+    public async Task<List<Admin>> GetAllAdminAsync() { return await DBAdmin.GetAllAdmin(_connectionString); }
+    public async Task CreateAdminAsync(Admin admin) { await DBAdmin.CreateAdmin(admin, _connectionString); }
+    public async Task UpdateAdminAsync(Admin admin) { await DBAdmin.UpdateAdmin(admin, _connectionString); }
+    public async Task DeleteAdminAsync(int id) { await DBAdmin.DeleteAdmin(id, _connectionString); }
 
     // Team
     public async Task<List<Team>> GetTeamsSortedbyScoreAsync() { return await DBTeam.GetTeamsSortedbyScore(_connectionString); }
