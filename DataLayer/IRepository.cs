@@ -34,6 +34,10 @@ public interface IRepository
     Task<List<Models.Type>> GetCategoriesAsync();
     Task CreateCategoryAsync(string categoryName);
     Task CreateSubcategoryAsync(Subcategory subcategory);
+    Task UpdateCategoryAsync(Category category);
+    Task UpdateSubcategoryAsync(Subcategory subcategory);
+    Task DeleteCategoryAsync(int category_id);
+    Task DeleteSubcategoryAsync(int subcategory_id);
 
     // Game
     Task<int> CreateGameAsync(Game game);

@@ -43,6 +43,10 @@ public class Business : IBusiness
     public async Task<List<Models.Type>> GetCategoriesAsync() { return await _repo.GetCategoriesAsync(); }
     public async Task CreateCategoryAsync(string categoryName) { await _repo.CreateCategoryAsync(categoryName); }
     public async Task CreateSubcategoryAsync(Subcategory subcategory) { await _repo.CreateSubcategoryAsync(subcategory); }
+    public async Task UpdateCategoryAsync(Category category) { await _repo.UpdateCategoryAsync(category); }
+    public async Task UpdateSubcategoryAsync(Subcategory subcategory) { await _repo.UpdateSubcategoryAsync(subcategory); }
+    public async Task DeleteCategoryAsync(int category_id) { await _repo.DeleteCategoryAsync(category_id); }
+    public async Task DeleteSubcategoryAsync(int subcategory_id) { await _repo.DeleteSubcategoryAsync(subcategory_id); }
 
     // Game
     public async Task<int> CreateGameAsync(Game game) { return await _repo.CreateGameAsync(game); }

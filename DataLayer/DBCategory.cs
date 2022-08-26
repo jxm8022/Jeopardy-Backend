@@ -133,4 +133,129 @@ public static class DBCategory
             }
         });
     }
+
+    public static async Task UpdateCategory(Category category, string _connectionString)
+    {
+        await Task.Factory.StartNew(() =>
+        {
+            DataSet categorySet = new DataSet();
+
+            using SqlConnection connection = new SqlConnection(_connectionString);
+            using SqlCommand cmd = new SqlCommand("SELECT category_id, category_name FROM Category WHERE category_id = @category_id", connection);
+            cmd.Parameters.AddWithValue("@category_id", category.category_id);
+
+            SqlDataAdapter categoryAdapter = new SqlDataAdapter(cmd);
+
+            categoryAdapter.Fill(categorySet, "CategoryTable");
+
+            DataTable? categoryTable = categorySet.Tables["CategoryTable"];
+            if (categoryTable != null && categoryTable.Rows.Count > 0)
+            {
+                DataColumn[] dt = new DataColumn[1];
+                dt[0] = categoryTable.Columns["category_id"]!;
+                categoryTable.PrimaryKey = dt;
+                DataRow? gameRow = categoryTable.Rows.Find(category.category_id);
+                if (gameRow != null)
+                {
+                    gameRow["category_name"] = category.category_name;
+                }
+
+                SqlCommandBuilder commandBuilder = new SqlCommandBuilder(categoryAdapter);
+                SqlCommand updateCmd = commandBuilder.GetUpdateCommand();
+
+                categoryAdapter.UpdateCommand = updateCmd;
+                categoryAdapter.Update(categoryTable);
+            }
+        });
+    }
+    public static async Task UpdateSubcategory(Subcategory subcategory, string _connectionString)
+    {
+        await Task.Factory.StartNew(() =>
+        {
+            DataSet subcategorySet = new DataSet();
+
+            using SqlConnection connection = new SqlConnection(_connectionString);
+            using SqlCommand cmd = new SqlCommand("SELECT subcategory_id, subcategory_name, category_id FROM Subcategory WHERE subcategory_id = @subcategory_id", connection);
+            cmd.Parameters.AddWithValue("@subcategory_id", subcategory.subcategory_id);
+
+            SqlDataAdapter subcategoryAdapter = new SqlDataAdapter(cmd);
+
+            subcategoryAdapter.Fill(subcategorySet, "SubcategoryTable");
+
+            DataTable? subcategoryTable = subcategorySet.Tables["SubcategoryTable"];
+            if (subcategoryTable != null && subcategoryTable.Rows.Count > 0)
+            {
+                DataColumn[] dt = new DataColumn[1];
+                dt[0] = subcategoryTable.Columns["subcategory_id"]!;
+                subcategoryTable.PrimaryKey = dt;
+                DataRow? gameRow = subcategoryTable.Rows.Find(subcategory.subcategory_id);
+                if (gameRow != null)
+                {
+                    gameRow["subcategory_name"] = subcategory.subcategory_name;
+                }
+
+                SqlCommandBuilder commandBuilder = new SqlCommandBuilder(subcategoryAdapter);
+                SqlCommand updateCmd = commandBuilder.GetUpdateCommand();
+
+                subcategoryAdapter.UpdateCommand = updateCmd;
+                subcategoryAdapter.Update(subcategoryTable);
+            }
+        });
+    }
+    public static async Task DeleteCategory(int category_id, string _connectionString)
+    {
+        await Task.Factory.StartNew(() =>
+        {
+            DataSet categorySet = new DataSet();
+
+            using SqlConnection connection = new SqlConnection(_connectionString);
+
+            using SqlCommand cmd = new SqlCommand("DELETE FROM Category WHERE category_id = @category_id", connection);
+            cmd.Parameters.AddWithValue("@category_id", category_id);
+
+            SqlDataAdapter categoryAdapter = new SqlDataAdapter(cmd);
+
+            categoryAdapter.Fill(categorySet, "CategoryTable");
+
+            DataTable? categoryTable = categorySet.Tables["CategoryTable"];
+            if (categoryTable != null)
+            {
+
+                SqlCommandBuilder commandBuilder = new SqlCommandBuilder(categoryAdapter);
+                SqlCommand delete = commandBuilder.GetDeleteCommand();
+
+                categoryAdapter.DeleteCommand = delete;
+
+                categoryAdapter.Update(categoryTable);
+            }
+        });
+    }
+    public static async Task DeleteSubcategory(int subcategory_id, string _connectionString)
+    {
+        await Task.Factory.StartNew(() =>
+        {
+            DataSet subcategorySet = new DataSet();
+
+            using SqlConnection connection = new SqlConnection(_connectionString);
+
+            using SqlCommand cmd = new SqlCommand("DELETE FROM Subcategory WHERE subcategory_id = @subcategory_id", connection);
+            cmd.Parameters.AddWithValue("@subcategory_id", subcategory_id);
+
+            SqlDataAdapter subcategoryAdapter = new SqlDataAdapter(cmd);
+
+            subcategoryAdapter.Fill(subcategorySet, "SubcategoryTable");
+
+            DataTable? subcategoryTable = subcategorySet.Tables["SubcategoryTable"];
+            if (subcategoryTable != null)
+            {
+
+                SqlCommandBuilder commandBuilder = new SqlCommandBuilder(subcategoryAdapter);
+                SqlCommand delete = commandBuilder.GetDeleteCommand();
+
+                subcategoryAdapter.DeleteCommand = delete;
+
+                subcategoryAdapter.Update(subcategoryTable);
+            }
+        });
+    }
 }
