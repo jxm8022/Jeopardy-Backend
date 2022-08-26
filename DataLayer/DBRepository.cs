@@ -17,6 +17,10 @@ public class DBRepository : IRepository
     public async Task<List<Question>> GetAllQuestionsAsync(int subcategory) { return await DBQuestion.GetAllQuestions(subcategory, _connectionString); }
     public async Task<int> CreateQuestionAsync(Question question) { return await DBQuestion.CreateQuestion(question, _connectionString); }
     public async Task CreateAnswerAsync(Answer answer) { await DBQuestion.CreateAnswer(answer, _connectionString); }
+    public async Task UpdateQuestionAsync(Question question) { await DBQuestion.UpdateQuestion(question, _connectionString); }
+    public async Task UpdateAnswerAsync(Answer answer) { await DBQuestion.UpdateAnswer(answer, _connectionString); }
+    public async Task DeleteQuestionAsync(int question_id) { await DBQuestion.DeleteQuestion(question_id, _connectionString); }
+    public async Task DeleteAnswerAsync(int answer_id) { await DBQuestion.DeleteAnswer(answer_id, _connectionString); }
 
     // Player
     public async Task<List<Player>> GetPlayersAsync() { return await DBPlayer.GetPlayers(_connectionString); }
@@ -39,6 +43,10 @@ public class DBRepository : IRepository
     public async Task<List<Models.Type>> GetCategoriesAsync() { return await DBCategory.GetCategories(_connectionString); }
     public async Task CreateCategoryAsync(string categoryName) { await DBCategory.CreateCategory(categoryName, _connectionString); }
     public async Task CreateSubcategoryAsync(Subcategory subcategory) { await DBCategory.CreateSubcategory(subcategory, _connectionString); }
+    public async Task UpdateCategoryAsync(Category category) { await DBCategory.UpdateCategory(category, _connectionString); }
+    public async Task UpdateSubcategoryAsync(Subcategory subcategory) { await DBCategory.UpdateSubcategory(subcategory, _connectionString); }
+    public async Task DeleteCategoryAsync(int category_id) { await DBCategory.DeleteCategory(category_id, _connectionString); }
+    public async Task DeleteSubcategoryAsync(int subcategory_id) { await DBCategory.DeleteSubcategory(subcategory_id, _connectionString); }
 
     // Game
     public async Task<int> CreateGameAsync(Game game) { return await DBGame.CreateGame(game, _connectionString); }

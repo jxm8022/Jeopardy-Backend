@@ -59,4 +59,28 @@ public class QuestionController : ControllerBase
         }
         return NoContent();
     }
+
+    [HttpPut("UpdateQuestion")]
+    public async Task<ActionResult> UpdateQuestion(QA question)
+    {
+        if (question.question.question_id > 0 && question.answer.answer_id > 0)
+        {
+            await _bl.UpdateQuestionAsync(question.question);
+            await _bl.UpdateAnswerAsync(question.answer);
+            return Ok();
+        }
+        return NoContent();
+    }
+
+    [HttpDelete("DeleteQuestion/{question_id}/{answer_id}")]
+    public async Task<ActionResult> DeleteQuestion(int question_id, int answer_id)
+    {
+        if (question_id > 0 && answer_id > 0)
+        {
+            await _bl.DeleteAnswerAsync(answer_id);
+            await _bl.DeleteQuestionAsync(question_id);
+            return Ok();
+        }
+        return NoContent();
+    }
 }

@@ -8,6 +8,10 @@ public interface IRepository
     Task<List<Question>> GetAllQuestionsAsync(int subcategory);
     Task<int> CreateQuestionAsync(Question question);
     Task CreateAnswerAsync(Answer answer);
+    Task UpdateQuestionAsync(Question question);
+    Task UpdateAnswerAsync(Answer answer);
+    Task DeleteQuestionAsync(int question_id);
+    Task DeleteAnswerAsync(int answer_id);
 
     // Player
     Task<List<Player>> GetPlayersAsync();
@@ -30,6 +34,10 @@ public interface IRepository
     Task<List<Models.Type>> GetCategoriesAsync();
     Task CreateCategoryAsync(string categoryName);
     Task CreateSubcategoryAsync(Subcategory subcategory);
+    Task UpdateCategoryAsync(Category category);
+    Task UpdateSubcategoryAsync(Subcategory subcategory);
+    Task DeleteCategoryAsync(int category_id);
+    Task DeleteSubcategoryAsync(int subcategory_id);
 
     // Game
     Task<int> CreateGameAsync(Game game);

@@ -174,4 +174,129 @@ public static class DBQuestion
             }
         });
     }
+    public static async Task UpdateQuestion(Question question, string _connectionString)
+    {
+        await Task.Factory.StartNew(() =>
+        {
+            DataSet questionSet = new DataSet();
+
+            using SqlConnection connection = new SqlConnection(_connectionString);
+            using SqlCommand cmd = new SqlCommand("SELECT question_id, question_entry, category_id FROM Question WHERE question_id = @question_id", connection);
+            cmd.Parameters.AddWithValue("@question_id", question.question_id);
+
+            SqlDataAdapter questionAdapter = new SqlDataAdapter(cmd);
+
+            questionAdapter.Fill(questionSet, "QuestionTable");
+
+            DataTable? questionTable = questionSet.Tables["QuestionTable"];
+            if (questionTable != null && questionTable.Rows.Count > 0)
+            {
+                DataColumn[] dt = new DataColumn[1];
+                dt[0] = questionTable.Columns["question_id"]!;
+                questionTable.PrimaryKey = dt;
+                DataRow? gameRow = questionTable.Rows.Find(question.question_id);
+                if (gameRow != null)
+                {
+                    gameRow["question_entry"] = question.question_entry;
+                    gameRow["category_id"] = question.category_id;
+                }
+
+                SqlCommandBuilder commandBuilder = new SqlCommandBuilder(questionAdapter);
+                SqlCommand updateCmd = commandBuilder.GetUpdateCommand();
+
+                questionAdapter.UpdateCommand = updateCmd;
+                questionAdapter.Update(questionTable);
+            }
+        });
+    }
+    public static async Task UpdateAnswer(Answer answer, string _connectionString)
+    {
+        await Task.Factory.StartNew(() =>
+        {
+            DataSet answerSet = new DataSet();
+
+            using SqlConnection connection = new SqlConnection(_connectionString);
+            using SqlCommand cmd = new SqlCommand("SELECT answer_id, answer_entry, question_id FROM Answer WHERE answer_id = @answer_id", connection);
+            cmd.Parameters.AddWithValue("@answer_id", answer.answer_id);
+
+            SqlDataAdapter answerAdapter = new SqlDataAdapter(cmd);
+
+            answerAdapter.Fill(answerSet, "AnswerTable");
+
+            DataTable? answerTable = answerSet.Tables["AnswerTable"];
+            if (answerTable != null && answerTable.Rows.Count > 0)
+            {
+                DataColumn[] dt = new DataColumn[1];
+                dt[0] = answerTable.Columns["answer_id"]!;
+                answerTable.PrimaryKey = dt;
+                DataRow? gameRow = answerTable.Rows.Find(answer.answer_id);
+                if (gameRow != null)
+                {
+                    gameRow["answer_entry"] = answer.answer_entry;
+                }
+
+                SqlCommandBuilder commandBuilder = new SqlCommandBuilder(answerAdapter);
+                SqlCommand updateCmd = commandBuilder.GetUpdateCommand();
+
+                answerAdapter.UpdateCommand = updateCmd;
+                answerAdapter.Update(answerTable);
+            }
+        });
+    }
+    public static async Task DeleteQuestion(int question_id, string _connectionString)
+    {
+        await Task.Factory.StartNew(() =>
+        {
+            DataSet questionSet = new DataSet();
+
+            using SqlConnection connection = new SqlConnection(_connectionString);
+
+            using SqlCommand cmd = new SqlCommand("DELETE FROM Question WHERE question_id = @question_id", connection);
+            cmd.Parameters.AddWithValue("@question_id", question_id);
+
+            SqlDataAdapter questionAdapter = new SqlDataAdapter(cmd);
+
+            questionAdapter.Fill(questionSet, "QuestionTable");
+
+            DataTable? questionTable = questionSet.Tables["QuestionTable"];
+            if (questionTable != null)
+            {
+
+                SqlCommandBuilder commandBuilder = new SqlCommandBuilder(questionAdapter);
+                SqlCommand delete = commandBuilder.GetDeleteCommand();
+
+                questionAdapter.DeleteCommand = delete;
+
+                questionAdapter.Update(questionTable);
+            }
+        });
+    }
+    public static async Task DeleteAnswer(int answer_id, string _connectionString)
+    {
+        await Task.Factory.StartNew(() =>
+        {
+            DataSet answerSet = new DataSet();
+
+            using SqlConnection connection = new SqlConnection(_connectionString);
+
+            using SqlCommand cmd = new SqlCommand("DELETE FROM Answer WHERE answer_id = @answer_id", connection);
+            cmd.Parameters.AddWithValue("@answer_id", answer_id);
+
+            SqlDataAdapter answerAdapter = new SqlDataAdapter(cmd);
+
+            answerAdapter.Fill(answerSet, "AnswerTable");
+
+            DataTable? answerTable = answerSet.Tables["AnswerTable"];
+            if (answerTable != null)
+            {
+
+                SqlCommandBuilder commandBuilder = new SqlCommandBuilder(answerAdapter);
+                SqlCommand delete = commandBuilder.GetDeleteCommand();
+
+                answerAdapter.DeleteCommand = delete;
+
+                answerAdapter.Update(answerTable);
+            }
+        });
+    }
 }
