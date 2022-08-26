@@ -17,6 +17,10 @@ public class DBRepository : IRepository
     public async Task<List<Question>> GetAllQuestionsAsync(int subcategory) { return await DBQuestion.GetAllQuestions(subcategory, _connectionString); }
     public async Task<int> CreateQuestionAsync(Question question) { return await DBQuestion.CreateQuestion(question, _connectionString); }
     public async Task CreateAnswerAsync(Answer answer) { await DBQuestion.CreateAnswer(answer, _connectionString); }
+    public async Task UpdateQuestionAsync(Question question) { await DBQuestion.UpdateQuestion(question, _connectionString); }
+    public async Task UpdateAnswerAsync(Answer answer) { await DBQuestion.UpdateAnswer(answer, _connectionString); }
+    public async Task DeleteQuestionAsync(int question_id) { await DBQuestion.DeleteQuestion(question_id, _connectionString); }
+    public async Task DeleteAnswerAsync(int answer_id) { await DBQuestion.DeleteAnswer(answer_id, _connectionString); }
 
     // Player
     public async Task<List<Player>> GetPlayersAsync() { return await DBPlayer.GetPlayers(_connectionString); }

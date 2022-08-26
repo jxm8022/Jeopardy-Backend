@@ -17,6 +17,10 @@ public class Business : IBusiness
     public async Task<List<Question>> GetAllQuestionsAsync(int subcategory) { return await _repo.GetAllQuestionsAsync(subcategory); }
     public async Task<int> CreateQuestionAsync(Question question) { return await _repo.CreateQuestionAsync(question); }
     public async Task CreateAnswerAsync(Answer answer) { await _repo.CreateAnswerAsync(answer); }
+    public async Task UpdateQuestionAsync(Question question) { await _repo.UpdateQuestionAsync(question); }
+    public async Task UpdateAnswerAsync(Answer answer) { await _repo.UpdateAnswerAsync(answer); }
+    public async Task DeleteQuestionAsync(int question_id) { await _repo.DeleteQuestionAsync(question_id); }
+    public async Task DeleteAnswerAsync(int answer_id) { await _repo.DeleteAnswerAsync(answer_id); }
 
     // Player
     public async Task<List<Player>> GetPlayersAsync() { return await _repo.GetPlayersAsync(); }
