@@ -54,7 +54,6 @@ public static class DBQuestion
                         question_id = (int)row["question_id"]
                     }
                 };
-                Console.WriteLine(part);
                 questions.Add(part);
             }
             return questions;
@@ -62,15 +61,15 @@ public static class DBQuestion
         return null!;
     }
 
-    public static async Task<List<Question>> GetAllQuestions(int subcategory, string _connectionString)
+    public static async Task<List<QA>> GetAllQuestions(int subcategory, string _connectionString)
     {
         return await Task.Factory.StartNew(() =>
         {
-            List<Question> questions = new List<Question>();
+            List<QA> questions = new List<QA>();
             DataSet questionSet = new DataSet();
 
             using SqlConnection connection = new SqlConnection(_connectionString);
-            using SqlCommand cmd = new SqlCommand("SELECT * FROM Question WHERE category_id = @category_id", connection);
+            using SqlCommand cmd = new SqlCommand("SELECT * FROM Question INNER JOIN Answer ON question.question_id = answer.question_id WHERE category_id = @category_id", connection);
             cmd.Parameters.AddWithValue("@category_id", subcategory);
 
             SqlDataAdapter questionAdapter = new SqlDataAdapter(cmd);
@@ -82,13 +81,22 @@ public static class DBQuestion
             {
                 foreach (DataRow row in questionTable.Rows)
                 {
-                    Question question = new Question
+                    QA part = new QA
                     {
-                        question_id = (int)row["question_id"],
-                        question_entry = (string)row["question_entry"],
-                        category_id = (int)row["category_id"]
+                        question = new Question
+                        {
+                            question_id = (int)row["question_id"],
+                            question_entry = (string)row["question_entry"],
+                            category_id = (int)row["category_id"]
+                        },
+                        answer = new Answer
+                        {
+                            answer_id = (int)row["answer_id"],
+                            answer_entry = (string)row["answer_entry"],
+                            question_id = (int)row["question_id"]
+                        }
                     };
-                    questions.Add(question);
+                    questions.Add(part);
                 }
                 return questions;
             }
