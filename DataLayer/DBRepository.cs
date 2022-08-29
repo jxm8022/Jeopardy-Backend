@@ -14,7 +14,7 @@ public class DBRepository : IRepository
 
     // Question
     public async Task<List<List<QA>>> GetQuestionsAsync(List<int> subcategories) { return await DBQuestion.GetQuestions(subcategories, _connectionString); }
-    public async Task<List<Question>> GetAllQuestionsAsync(int subcategory) { return await DBQuestion.GetAllQuestions(subcategory, _connectionString); }
+    public async Task<List<QA>> GetAllQuestionsAsync(int subcategory) { return await DBQuestion.GetAllQuestions(subcategory, _connectionString); }
     public async Task<int> CreateQuestionAsync(Question question) { return await DBQuestion.CreateQuestion(question, _connectionString); }
     public async Task CreateAnswerAsync(Answer answer) { await DBQuestion.CreateAnswer(answer, _connectionString); }
     public async Task UpdateQuestionAsync(Question question) { await DBQuestion.UpdateQuestion(question, _connectionString); }

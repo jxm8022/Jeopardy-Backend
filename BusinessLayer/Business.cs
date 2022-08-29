@@ -14,7 +14,7 @@ public class Business : IBusiness
 
     // Question
     public async Task<List<List<QA>>> GetQuestionsAsync(List<int> subcategories) { return await _repo.GetQuestionsAsync(subcategories); }
-    public async Task<List<Question>> GetAllQuestionsAsync(int subcategory) { return await _repo.GetAllQuestionsAsync(subcategory); }
+    public async Task<List<QA>> GetAllQuestionsAsync(int subcategory) { return await _repo.GetAllQuestionsAsync(subcategory); }
     public async Task<int> CreateQuestionAsync(Question question) { return await _repo.CreateQuestionAsync(question); }
     public async Task CreateAnswerAsync(Answer answer) { await _repo.CreateAnswerAsync(answer); }
     public async Task UpdateQuestionAsync(Question question) { await _repo.UpdateQuestionAsync(question); }

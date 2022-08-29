@@ -5,7 +5,7 @@ public interface IBusiness
 {
     // Question
     Task<List<List<QA>>> GetQuestionsAsync(List<int> subcategories);
-    Task<List<Question>> GetAllQuestionsAsync(int subcategory);
+    Task<List<QA>> GetAllQuestionsAsync(int subcategory);
     Task<int> CreateQuestionAsync(Question question);
     Task CreateAnswerAsync(Answer answer);
     Task UpdateQuestionAsync(Question question);
